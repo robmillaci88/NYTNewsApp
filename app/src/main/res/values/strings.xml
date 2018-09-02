@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">NYTNews</string>
+    <string name="title_activity_search_results">searchResults</string>
+</resources>
