@@ -31,8 +31,8 @@ public class DownloadSearchData extends AsyncTask<String, Integer, ArrayList> {
 
     @Override
     protected ArrayList doInBackground(String... strings) {
+        publishProgress(1);
         String data = downloadWebinfo(strings[0]);
-
         try {
             reader = new JSONObject(data);
 
@@ -41,6 +41,8 @@ public class DownloadSearchData extends AsyncTask<String, Integer, ArrayList> {
 
             objectsArraySize = objectsArray.length();
             for (int i = 0; i < objectsArray.length(); i++) {
+
+
                 JSONObject arrayObject = (JSONObject) objectsArray.get(i);
                 final String webLink = arrayObject.getString("web_url");
 
@@ -124,10 +126,6 @@ public class DownloadSearchData extends AsyncTask<String, Integer, ArrayList> {
             this.pubDate = pubDate;
             this.webLink = webLink;
             this.imageUrl = imageUrl;
-            count++;
-
-
-            publishProgress((100/objectsArraySize)*count);
         }
 
         public String getWebLink() {
@@ -146,6 +144,8 @@ public class DownloadSearchData extends AsyncTask<String, Integer, ArrayList> {
             return imageUrl;
         }
     }
+
+
 
     interface downloadcallback{
         void mcallback(int progress);

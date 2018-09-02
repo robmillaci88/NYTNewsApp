@@ -3,7 +3,6 @@ package com.example.robmillaci.nytnews;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -22,7 +21,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
-import java.util.concurrent.ExecutionException;
 
 public class Search extends AppCompatActivity implements DownloadSearchData.downloadcallback {
     TextView fromDate;
@@ -111,6 +109,9 @@ public class Search extends AppCompatActivity implements DownloadSearchData.down
                 if(isReadyTosearch()){
                     try {
                         buildSearchUrl();
+                        searchButton.setText("SEARCHING");
+                        searchButton.setClickable(false);
+                        searchButton.setBackgroundResource(R.drawable.search_button_style_clicked);
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
@@ -185,7 +186,6 @@ public class Search extends AppCompatActivity implements DownloadSearchData.down
 
     @Override
     public void mcallback(int progress) {
-        Log.d("callback", "mcallback: progress is " + progress);
         mProgressBar.setVisibility(View.VISIBLE);
         mProgressBar.setMax(100);
         mProgressBar.setProgress(progress);
@@ -195,6 +195,10 @@ public class Search extends AppCompatActivity implements DownloadSearchData.down
     @Override
     public void downloadFinished(ArrayList resultData) {
         data = resultData;
+
+        searchButton.setText("SEARCH");
+        searchButton.setClickable(true);
+        searchButton.setBackgroundResource(R.drawable.search_button_style);
 
         Intent searchIntent = new Intent(this,SearchResults.class);
         Gson gson = new Gson();
