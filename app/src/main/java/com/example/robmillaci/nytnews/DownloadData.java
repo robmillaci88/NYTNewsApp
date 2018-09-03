@@ -3,6 +3,7 @@ package com.example.robmillaci.nytnews;
 import android.os.AsyncTask;
 import android.util.Log;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -10,7 +11,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class DownloadData extends AsyncTask<String, Void, ArrayList> {
+public class DownloadData extends AsyncTask<String, Integer, ArrayList> {
     ArrayList<newsObjects> objects = new ArrayList();
     JSONObject reader;
     DownloadDataCallback mDownloadDataCallback;
@@ -23,6 +24,8 @@ public class DownloadData extends AsyncTask<String, Void, ArrayList> {
     protected ArrayList doInBackground(String... strings) {
         StringBuilder sb = new StringBuilder();
         URL url = null;
+
+
         try {
             url = new URL(strings[0]);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -38,6 +41,7 @@ public class DownloadData extends AsyncTask<String, Void, ArrayList> {
             reader = new JSONObject(sb.toString());
             JSONArray items = reader.getJSONArray("results");
             for (int i = 0; i < items.length(); i++) {
+                publishProgress(i,items.length());
                 JSONObject item = items.getJSONObject(i);
                 String section = item.getString("section");
                 String subsection = item.getString("subsection");
@@ -47,15 +51,16 @@ public class DownloadData extends AsyncTask<String, Void, ArrayList> {
                 String byLine = item.getString("byline");
                 String pubdate = item.getString("published_date");
 
-                JSONArray multimedia = item.getJSONArray("multimedia");
-                JSONObject mediaObject = (JSONObject) multimedia.get(1);
-                String imgLink = mediaObject.getString("url");
+                try {
+                    JSONArray multimedia = item.getJSONArray("multimedia");
+                    JSONObject mediaObject = (JSONObject) multimedia.get(1);
+                    String imgLink = mediaObject.getString("url");
+                    newsObjects newsObject = new newsObjects(section, subsection, title, abStract, link, byLine, pubdate, imgLink);
+                    objects.add(newsObject);
+                } catch (JSONException e){
+                    e.getMessage();
+                }
 
-
-                Log.d("downloading", "doInBackground: " + imgLink);
-
-               newsObjects newsObject = new newsObjects(section, subsection, title, abStract, link, byLine, pubdate, imgLink);
-               objects.add(newsObject);
             }
 
         } catch (Exception e) {
@@ -63,6 +68,13 @@ public class DownloadData extends AsyncTask<String, Void, ArrayList> {
         }
 
         return objects;
+    }
+
+    @Override
+    protected void onProgressUpdate(Integer... values) {
+        Log.d("progress", "onProgressUpdate: called");
+        mDownloadDataCallback.progressUpdateCallback(values[0],values[1]);
+
     }
 
     @Override
@@ -127,6 +139,7 @@ public class DownloadData extends AsyncTask<String, Void, ArrayList> {
 
     interface DownloadDataCallback{
         void downloadFinished(ArrayList downloadData);
+        void progressUpdateCallback(Integer... values);
     }
 
 }

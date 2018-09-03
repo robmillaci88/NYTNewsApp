@@ -42,8 +42,7 @@ public class Search extends AppCompatActivity implements DownloadSearchData.down
 
     ArrayList<CheckBox> checkBoxArray;
     com.takisoft.datetimepicker.DatePickerDialog mDatePickerDialog;
-    private String searchURL = "https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=166a1190cb80486a87ead710d48139ae&hl=true&q=";
-    private String SubjectSearchURL = "https://api.nytimes.com/svc/mostpopular/v2/mostviewed/";
+    private String searchURL = "https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=166a1190cb80486a87ead710d48139ae&q=";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,13 +57,13 @@ public class Search extends AppCompatActivity implements DownloadSearchData.down
         searchButton = findViewById(R.id.searchButton);
         fromDate = findViewById(R.id.fromDate);
         toDate = findViewById(R.id.toDate);
-        artsCheckBox = findViewById(R.id.artsCheckBox);
+        artsCheckBox = findViewById(R.id.foodCheckBox);
         businessCheckBox = findViewById(R.id.businessCheckBox);
         entrepreneursCheckBox = findViewById(R.id.entrepreneursCheckBox);
         politicsCheckBox = findViewById(R.id.politicsCheckBox);
         sportsCheckBox = findViewById(R.id.sportsCheckBox);
         travelCheckBox = findViewById(R.id.travelCheckBox);
-        searchTermText = findViewById(R.id.seachTermText);
+        searchTermText = findViewById(R.id.notificationSearchTerm);
         sortSwitch = findViewById(R.id.sortSwitch);
         mProgressBar = findViewById(R.id.progressBar);
 
@@ -125,12 +124,27 @@ public class Search extends AppCompatActivity implements DownloadSearchData.down
         StringBuilder url = new StringBuilder();
         url.append(searchURL);
         url.append(searchTermText.getText());
+        url.append("&fq=news_desk:(");
 
         DateFormat outputFormat = new SimpleDateFormat("yyyyMMdd", Locale.getDefault());
         DateFormat inputFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
 
         String fDate = fromDate.getText().toString();
         String tDate = toDate.getText().toString();
+
+
+        int checkedCount = 0;
+        for (CheckBox c : searchSubjectsArray){
+            if (c.isChecked()){
+                if (checkedCount>=1){
+                    url.append(" ");
+                }
+                url.append("\"" +c.getText().toString()).append("\"");
+                checkedCount ++;
+            }
+        }
+
+        url.append(")");
 
         if (!fDate.equals("")){
             Date date = inputFormat.parse(fDate);

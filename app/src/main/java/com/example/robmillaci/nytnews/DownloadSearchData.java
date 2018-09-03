@@ -42,7 +42,6 @@ public class DownloadSearchData extends AsyncTask<String, Integer, ArrayList> {
             objectsArraySize = objectsArray.length();
             for (int i = 0; i < objectsArray.length(); i++) {
 
-
                 JSONObject arrayObject = (JSONObject) objectsArray.get(i);
                 final String webLink = arrayObject.getString("web_url");
 

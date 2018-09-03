@@ -18,12 +18,21 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".WebActivity" />
+
+        <activity android:name=".WebActivity" />
         <activity
             android:name=".Search"
             android:parentActivityName=".MainActivity" />
-        <activity android:name=".SearchResults"></activity>
+        <activity android:name=".SearchResults" />
+        <activity android:name=".Settings"
+            android:parentActivityName=".MainActivity"/>
+
+        <receiver
+            android:name="com.example.robmillaci.nytnews.Schedule"
+            android:enabled="true" />
+        <receiver
+            android:name="com.example.robmillaci.nytnews.NotificationRecurrance"
+            android:enabled="true" />
     </application>
 
 </manifest>

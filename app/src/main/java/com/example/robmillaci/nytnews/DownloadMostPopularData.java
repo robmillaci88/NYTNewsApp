@@ -12,13 +12,15 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class DownloadMostPopularData extends AsyncTask<String, Void, ArrayList> {
+public class DownloadMostPopularData extends AsyncTask<String, Integer, ArrayList> {
     ArrayList<DownloadMostPopularData.topnewsObjects> objects = new ArrayList();
     JSONObject reader;
     DownloadMostPopularDataCallback mDownloadMostPopularDataCallback;
+    String category = "";
 
-    public DownloadMostPopularData(DownloadMostPopularDataCallback downloadMostPopularDataCallback) {
+    public DownloadMostPopularData(DownloadMostPopularDataCallback downloadMostPopularDataCallback, String category) {
         mDownloadMostPopularDataCallback = downloadMostPopularDataCallback;
+        this.category = category;
     }
 
     @Override
@@ -34,12 +36,12 @@ public class DownloadMostPopularData extends AsyncTask<String, Void, ArrayList> 
             String line;
             while ((line = br.readLine()) != null) {
                 sb.append(line + "\n");
-                Log.d("downloading", "doInBackground: " + line);
             }
 
             reader = new JSONObject(sb.toString());
             JSONArray items = reader.getJSONArray("results");
             for (int i = 0; i < items.length(); i++) {
+                publishProgress(i,items.length());
                 JSONObject item = items.getJSONObject(i);
                 String section = item.getString("section");
                 String title = item.getString("title");
@@ -67,9 +69,14 @@ public class DownloadMostPopularData extends AsyncTask<String, Void, ArrayList> 
     }
 
     @Override
+    protected void onProgressUpdate(Integer... values) {
+        mDownloadMostPopularDataCallback.progressUpdateCallback(values);
+    }
+
+    @Override
     protected void onPostExecute(ArrayList arrayList) {
         super.onPostExecute(arrayList);
-        mDownloadMostPopularDataCallback.popularDataDownloadFinished(arrayList);
+        mDownloadMostPopularDataCallback.popularDataDownloadFinished(arrayList,category);
     }
 
     public class topnewsObjects {
@@ -123,7 +130,8 @@ public class DownloadMostPopularData extends AsyncTask<String, Void, ArrayList> 
     }
 
     interface DownloadMostPopularDataCallback{
-        void popularDataDownloadFinished(ArrayList data);
+        void popularDataDownloadFinished(ArrayList data,String category);
+        void progressUpdateCallback(Integer... values);
     }
 
 }
