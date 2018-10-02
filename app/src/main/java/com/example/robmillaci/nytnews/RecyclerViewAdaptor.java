@@ -68,7 +68,6 @@ public class RecyclerViewAdaptor extends RecyclerView.Adapter<RecyclerViewAdapto
                 Intent intent = new Intent(mContext, WebActivity.class);
                 intent.putExtra("url", object.getLink());
                 mContext.startActivity(intent);
-                Log.d("array", "onClick: " + holder.link.getText().toString());
                 articlesReadArray.add(holder.link.getText().toString());
                 notifyDataSetChanged();
             }
@@ -77,7 +76,6 @@ public class RecyclerViewAdaptor extends RecyclerView.Adapter<RecyclerViewAdapto
 
         if (articlesReadArray != null) {
             for (String s : articlesReadArray) {
-                Log.d("array", "onBindViewHolder: " + s);
                 if (s.equals(holder.link.getText().toString())) {
                     holder.getRead().setVisibility(View.VISIBLE);
                     holder.getReadText().setVisibility(View.VISIBLE);

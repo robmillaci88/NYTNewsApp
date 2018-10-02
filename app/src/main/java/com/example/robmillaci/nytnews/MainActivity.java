@@ -25,6 +25,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements DownloadData.DownloadDataCallback, DownloadMostPopularData.DownloadMostPopularDataCallback {
@@ -47,6 +48,10 @@ public class MainActivity extends AppCompatActivity implements DownloadData.Down
         createNotificationChannel();
         prefsHelper = new SharedPreferencesHelper(this, "myPrefs", MODE_PRIVATE);
 
+        //restore settings and notification when app is reCreated
+        Intent i = new Intent(this, Settings.class);
+        i.putExtra("display",false);
+        startActivity(i);
 
         SharedPreferences prefs = getSharedPreferences("myPrefs", MODE_PRIVATE);
         if (prefs != null) {
@@ -226,6 +231,13 @@ public class MainActivity extends AppCompatActivity implements DownloadData.Down
     }
 
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //check the settings and ensure alarms are set
+
+    }
+
     public void createNotificationChannel() {
         // Create the NotificationChannel, but only on API 26+ because
         // the NotificationChannel class is new and not in the support library
@@ -237,7 +249,8 @@ public class MainActivity extends AppCompatActivity implements DownloadData.Down
             channel.setDescription(description);
             // Register the channel with the system;
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
+
+            if (notificationManager!= null) notificationManager.createNotificationChannel(channel);
         }
     }
 

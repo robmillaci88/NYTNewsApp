@@ -33,6 +33,10 @@ public class SharedPreferencesHelper {
         sharedEditor.putBoolean(storeName,s).commit();
     }
 
+    public void LongToSharedPreferences(String storeName,long s){
+        sharedEditor.putLong(storeName,s).commit();
+    }
+
     public boolean getboolean(String prefsName,String storedName, boolean defaultVal){
         SharedPreferences prefs = mContext.getSharedPreferences(prefsName, mode);
        return prefs.getBoolean(storedName,defaultVal);
@@ -42,6 +46,11 @@ public class SharedPreferencesHelper {
     public String getString(String prefsName,String storedName, String defaultVal){
         SharedPreferences prefs = mContext.getSharedPreferences(prefsName, mode);
         return prefs.getString(storedName,defaultVal);
+    }
+
+    public long getLong(String prefsName,String storedName, long defaultVal){
+        SharedPreferences prefs = mContext.getSharedPreferences(prefsName, mode);
+        return prefs.getLong(storedName,defaultVal);
     }
 
 

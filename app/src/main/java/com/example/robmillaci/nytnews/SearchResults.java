@@ -56,10 +56,6 @@ public class SearchResults extends AppCompatActivity {
         }.getType();
 
         data = gson.fromJson(dataString, type);
-        Log.d("GAETANO", "onCreate:  " + data.size());
-        for (DownloadSearchData.searchNewsObjects obj : data){
-            Log.d("GAETANO", "onCreate: " + obj.getWebLink()  + " " + obj.getHeadline());
-        }
 
         if (data.size() == 0) {
             //no data found

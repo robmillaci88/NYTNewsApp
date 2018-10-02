@@ -18,14 +18,16 @@ public class Schedule extends BroadcastReceiver implements DownloadMostPopularDa
     ArrayList entrepreneursData;
     ArrayList travelData;
     ArrayList<CheckBox> settingsCheckBoxes;
-    static boolean notifcationHasBeenSent = false;
+    static boolean notifcationHasBeenSent;
     Context mContext;
     SharedPreferencesHelper mSharedPreferencesHelper;
-    final String BASE_URL = "https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=166a1190cb80486a87ead710d48139ae&hl=true&";
+    final String BASE_URL = "https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=166a1190cb80486a87ead710d48139ae&hl=true&q=";
 
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        Log.d("NOTIFICATIONSCHEDULE", "onReceive: schedule called");
+        notifcationHasBeenSent = false;
         mContext = context;
         mSharedPreferencesHelper = new SharedPreferencesHelper(mContext,"myPrefs",0);
         Bundle intentExtras = intent.getExtras();
@@ -44,48 +46,41 @@ public class Schedule extends BroadcastReceiver implements DownloadMostPopularDa
         settingsCheckBoxes = Settings.settingsCheckBoxes;
 
         for (CheckBox c : settingsCheckBoxes) {
-            Log.d("alarm", "onReceive: checkbox " + c.getTag() + " " + c.isChecked());
             if (c.isChecked() && !notifcationHasBeenSent) {
-                Log.d("alarm", "onReceive: Reached switch statement");
                 switch (c.getTag().toString()) {
                     case "food":
                         DownloadMostPopularData downloadMostPopularDataFood = new DownloadMostPopularData(this, "food");
-                        downloadMostPopularDataFood.execute(BASE_URL + "q=" + intentExtras.getString("searchTerm") + "fq=news_desk:(\"Food\")");
+                        downloadMostPopularDataFood.execute(BASE_URL + intentExtras.getString("searchTerm") + "fq=news_desk:(\"Food\")");
                         break;
 
                     case "science":
                         DownloadMostPopularData downloadMostPopularDataScience = new DownloadMostPopularData(this, "science");
-                        downloadMostPopularDataScience.execute(BASE_URL + "q=" + intentExtras.getString("searchTerm") + "fq=news_desk:(\"Science\")");
+                        downloadMostPopularDataScience.execute(BASE_URL + intentExtras.getString("searchTerm") + "fq=news_desk:(\"Science\")");
                         break;
 
                     case "entre":
                         DownloadMostPopularData downloadMostPopularDataEntre = new DownloadMostPopularData(this, "entrepreneur");
-                        downloadMostPopularDataEntre.execute(BASE_URL + "q=" + intentExtras.getString("searchTerm") + "fq=news_desk:(\"Entrepreneur\")");
+                        downloadMostPopularDataEntre.execute(BASE_URL + intentExtras.getString("searchTerm") + "fq=news_desk:(\"Entrepreneur\")");
                         break;
 
                     case "movies":
                         DownloadMostPopularData downloadMostPopularDataMovie = new DownloadMostPopularData(this, "movies");
-                        downloadMostPopularDataMovie.execute(BASE_URL + "q=" + intentExtras.getString("searchTerm") + "fq=news_desk:(\"Movies\")");
+                        downloadMostPopularDataMovie.execute(BASE_URL + intentExtras.getString("searchTerm") + "fq=news_desk:(\"Movies\")");
                         break;
 
                     case "sport":
                         DownloadMostPopularData downloadMostPopularDataSport = new DownloadMostPopularData(this, "sport");
-                        downloadMostPopularDataSport.execute(BASE_URL + "q=" + intentExtras.getString("searchTerm") + "fq=news_desk:(\"Sport\")");
+                        downloadMostPopularDataSport.execute(BASE_URL + intentExtras.getString("searchTerm") + "fq=news_desk:(\"Sport\")");
 
                         break;
 
                     case "travel":
                         DownloadMostPopularData downloadMostPopularDataTravel = new DownloadMostPopularData(this, "travel");
-                        downloadMostPopularDataTravel.execute(BASE_URL + "q=" + intentExtras.getString("searchTerm") + "fq=news_desk:(\"Travel\")");
+                        downloadMostPopularDataTravel.execute(BASE_URL + intentExtras.getString("searchTerm") + "fq=news_desk:(\"Travel\")");
                         break;
-
-
                 }
             }
         }
-
-
-        //todo check for new data on recipet of broadcast
 
     }
 
@@ -99,7 +94,6 @@ public class Schedule extends BroadcastReceiver implements DownloadMostPopularDa
                     if (data != foodData) {
                         //fire notification - data has changed
                         tryToFireNotification();
-                        notifcationHasBeenSent = true;
                         foodData = data;
                         Log.d("data", "popularDataDownloadFinished: data " + foodData);
                         dataDownloaded = true;
@@ -109,7 +103,6 @@ public class Schedule extends BroadcastReceiver implements DownloadMostPopularDa
                     if (data != moviesData) {
                         //fire notification - data has changed
                         tryToFireNotification();
-                        notifcationHasBeenSent = true;
                         moviesData = data;
                         dataDownloaded = true;
                     }
@@ -118,7 +111,6 @@ public class Schedule extends BroadcastReceiver implements DownloadMostPopularDa
                     if (data != scienceData) {
                         //fire notification - data has changed
                         tryToFireNotification();
-                        notifcationHasBeenSent = true;
                         scienceData = data;
                         dataDownloaded = true;
                     }
@@ -127,7 +119,6 @@ public class Schedule extends BroadcastReceiver implements DownloadMostPopularDa
                     if (data != entrepreneursData) {
                         //fire notification - data has changed
                         tryToFireNotification();
-                        notifcationHasBeenSent = true;
                         entrepreneursData = data;
                         dataDownloaded = true;
                     }
@@ -135,7 +126,6 @@ public class Schedule extends BroadcastReceiver implements DownloadMostPopularDa
                     if (data != sportsData) {
                         //fire notification - data has changed
                         tryToFireNotification();
-                        notifcationHasBeenSent = true;
                         sportsData = data;
                         dataDownloaded = true;
                     }
@@ -143,13 +133,11 @@ public class Schedule extends BroadcastReceiver implements DownloadMostPopularDa
                     if (data != travelData) {
                         //fire notification - data has changed
                         tryToFireNotification();
-                        notifcationHasBeenSent = true;
                         travelData = data;
                         dataDownloaded = true;
                     }
             }
             saveDataToPreferences(category, dataDownloaded);
-            dataDownloaded = false;
         }
 
 
@@ -197,6 +185,7 @@ public class Schedule extends BroadcastReceiver implements DownloadMostPopularDa
 
             // notificationId is a unique int for each notification that you must define
             notificationManager.notify(1, Settings.mBuilder.build());
+            notifcationHasBeenSent = true;
         }
     }
 

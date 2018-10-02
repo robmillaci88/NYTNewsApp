@@ -57,7 +57,7 @@ public class Search extends AppCompatActivity implements DownloadSearchData.down
         searchButton = findViewById(R.id.searchButton);
         fromDate = findViewById(R.id.fromDate);
         toDate = findViewById(R.id.toDate);
-        artsCheckBox = findViewById(R.id.foodCheckBox);
+        artsCheckBox = findViewById(R.id.artsCheckBox);
         businessCheckBox = findViewById(R.id.businessCheckBox);
         entrepreneursCheckBox = findViewById(R.id.entrepreneursCheckBox);
         politicsCheckBox = findViewById(R.id.politicsCheckBox);

@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.Switch;
@@ -39,9 +38,23 @@ public class Settings extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        boolean display = getIntent().getBooleanExtra("display", true);
         setContentView(R.layout.activity_settings);
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mContext = this;
+
+        checkBoxSetUp();
+
+        //if we intend to not display the setting activity
+        if (!display) {
+            onBackPressed();
+        }
+    }
+
+
+    void checkBoxSetUp() {
         sharedPreferencesHelper = new SharedPreferencesHelper(this, "myPrefs", 0);
 
         notificationSearchTerm = findViewById(R.id.notificationSearchTerm);
@@ -76,46 +89,46 @@ public class Settings extends AppCompatActivity {
 
         try {
             checkedArrayList = GsonHelper.getMyArray(mContext, "checkBoxVals");
-            for (String s : checkedArrayList){
-                    switch (s){
-                        case "food":
-                            foodSettingsCheckBox.setChecked(true);
-                            break;
+            for (String s : checkedArrayList) {
+                switch (s) {
+                    case "food":
+                        foodSettingsCheckBox.setChecked(true);
+                        break;
 
-                        case "science":
-                            scienceSettingsCheckBox.setChecked(true);
-                            break;
+                    case "science":
+                        scienceSettingsCheckBox.setChecked(true);
+                        break;
 
-                        case "entre":
-                            entreSettingsCheckBox.setChecked(true);
-                            break;
+                    case "entre":
+                        entreSettingsCheckBox.setChecked(true);
+                        break;
 
-                        case "movies":
-                            moviesSettingsCheckBox.setChecked(true);
-                            break;
+                    case "movies":
+                        moviesSettingsCheckBox.setChecked(true);
+                        break;
 
-                        case "sport":
-                            sportsSettingsCheckBox.setChecked(true);
-                            break;
+                    case "sport":
+                        sportsSettingsCheckBox.setChecked(true);
+                        break;
 
-                        case "travel":
-                            travelSettingsCheckBox.setChecked(true);
-                            break;
-                    }
+                    case "travel":
+                        travelSettingsCheckBox.setChecked(true);
+                        break;
                 }
+            }
         } catch (Exception e) {
             checkedArrayList = new ArrayList<String>();
         }
 
-        notificationSearchTerm.setText(sharedPreferencesHelper.getString("myPrefs","searchTerm",""));
+        notificationSearchTerm.setText(sharedPreferencesHelper.getString("myPrefs", "searchTerm", ""));
 
         notificationSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     boolean readyToGo = false;
-                    for (CheckBox c : settingsCheckBoxes){
-                        if (c.isChecked()){
+                    for (CheckBox c : settingsCheckBoxes) {
+                        if (c.isChecked()) {
                             readyToGo = true;
                         }
                     }
@@ -134,21 +147,18 @@ public class Settings extends AppCompatActivity {
                                 .setAutoCancel(true);
 
                         createNotificationAlarm();
-                        createNotificationRecurrance();
                     } else {
-                        Toast.makeText(mContext,"You need to select at least one category", Toast.LENGTH_LONG).show();
+                        Toast.makeText(mContext, "You need to select at least one category", Toast.LENGTH_LONG).show();
                         notificationSwitch.setChecked(false);
                     }
                 } else {
                     mBuilder = null;
 
-                    //cancel the alarms
-                    if (alarmManager!=null) {
+                    //cancel the alarm
+                    if (alarmManager != null) {
                         Intent intentAlarm = new Intent(mContext, Schedule.class);
                         alarmManager.cancel(PendingIntent.getBroadcast(mContext, 1, intentAlarm, PendingIntent.FLAG_CANCEL_CURRENT));
 
-                        Intent intentAlarmRec = new Intent(mContext, NotificationRecurrance.class);
-                        alarmManager.cancel(PendingIntent.getBroadcast(mContext, 2, intentAlarmRec, PendingIntent.FLAG_CANCEL_CURRENT));
                     }
 
                 }
@@ -160,40 +170,15 @@ public class Settings extends AppCompatActivity {
 
     }
 
+    private void createNotificationAlarm() {
 
-
-    private void createNotificationRecurrance() {
-        // Create a calendar object that is 9 hours 0 minutes and 0 seconds of the next day which allows us to get the time in milliseconds until 9am the next day
         Calendar c = Calendar.getInstance();
-        c.add(Calendar.DATE, 1);
-        c.set(Calendar.HOUR_OF_DAY, 9);
-        c.set(Calendar.MINUTE, 0);
+        c.add(Calendar.DATE, 0);
+        c.set(Calendar.HOUR_OF_DAY, 1);
+        c.set(Calendar.MINUTE, 9);
         c.set(Calendar.SECOND, 0);
         c.set(Calendar.MILLISECOND, 0);
-        long scheduleTime = c.getTimeInMillis();
-
-        // Create an Intent and set the class that will execute when the Alarm triggers. Here we have
-        // specified Schedule class in the Intent. The onReceive() method of this class will execute when the broadcast from the alarm is received.
-        Intent intentAlarm = new Intent(mContext, NotificationRecurrance.class);
-        intentAlarm.putExtra("searchTerm",notificationSearchTerm.getText().toString());
-
-        // Get the Alarm Service.
-        alarmManager = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
-
-        // Set the alarm for the specified timeUntilMidnight passing a pending intent with the Schedule.class intent (reciever)
-        // Set the reocurance of the alarm to be 24 hours 1000*60*60*24
-
-        long alarmRecurranceTime = 1000 * 60 * 60 * 24;
-
-        alarmManager.setRepeating(AlarmManager.RTC, scheduleTime, alarmRecurranceTime, PendingIntent.getBroadcast(mContext, 2, intentAlarm, PendingIntent.FLAG_CANCEL_CURRENT));
-
-
-    }
-
-    private void createNotificationAlarm() {
-        // Create a calendar object and get the current time in millis
-        Calendar c = Calendar.getInstance();
-        long scheduleTime = c.getTimeInMillis(); //wait 10 minutes before firing the first notification check
+        long scheduleTime = c.getTimeInMillis(); //the first alarm is set to run at 9am the next day
 
         // Create an Intent and set the class that will execute when the Alarm triggers. Here we have
         // specified Schedule class in the Intent. The onReceive() method of this class will execute when the broadcast from the alarm is received.
@@ -202,14 +187,11 @@ public class Settings extends AppCompatActivity {
         // Get the Alarm Service.
         alarmManager = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
 
-        // Set the alarm for the specified timeUntilMidnight passing a pending intent with the Schedule.class intent (reciever)
-        // Set the reocurance of the alarm to be 1 hour 1000*60*60*1
-
-        long alarmRecurranceTime = 1000 * 60 * 60 * 1;
+        // Set the reocurance of the alarm to be 24 hours 1000*60*60*24
+        long alarmRecurranceTime = 1000*60*60*24;
 
         alarmManager.setRepeating(AlarmManager.RTC, scheduleTime, alarmRecurranceTime, PendingIntent.getBroadcast(mContext, 1, intentAlarm, PendingIntent.FLAG_CANCEL_CURRENT));
 
-        Log.d("alarm", "createNotificationAlarm: scheduled alarm");
     }
 
     public ArrayList<CheckBox> getSettingsCheckBoxes() {
@@ -233,7 +215,7 @@ public class Settings extends AppCompatActivity {
             }
         }
         sharedPreferencesHelper.stringToSharedPreferences("checkBoxVals", GsonHelper.stringMyArrayList(checkedArrayList));
-        sharedPreferencesHelper.stringToSharedPreferences("searchTerm",notificationSearchTerm.getText().toString());
+        sharedPreferencesHelper.stringToSharedPreferences("searchTerm", notificationSearchTerm.getText().toString());
 
     }
 }
