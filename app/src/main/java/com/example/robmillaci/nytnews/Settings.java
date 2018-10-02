@@ -173,9 +173,9 @@ public class Settings extends AppCompatActivity {
     private void createNotificationAlarm() {
 
         Calendar c = Calendar.getInstance();
-        c.add(Calendar.DATE, 0);
-        c.set(Calendar.HOUR_OF_DAY, 1);
-        c.set(Calendar.MINUTE, 9);
+        c.add(Calendar.DATE, 1);
+        c.set(Calendar.HOUR_OF_DAY, 9);
+        c.set(Calendar.MINUTE, 0);
         c.set(Calendar.SECOND, 0);
         c.set(Calendar.MILLISECOND, 0);
         long scheduleTime = c.getTimeInMillis(); //the first alarm is set to run at 9am the next day
