@@ -126,11 +126,35 @@ public class UITests {
             onView(withId(R.id.notificationSwitch)).perform(click());
             assertTrue(SettingsActivity.mBuilder != null);
             assertTrue(SettingsActivity.alarmManager != null);
+        }finally {
+            Intents.release();
         }
+
     }
 
     @Test
-    public void GCheckWebView() {
+    public void GCheckTurnOffNotification() throws InterruptedException {
+        Intents.init();
+        openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
+        Thread.sleep(1000);
+        onView(withText("Settings")).perform(click());
+
+        try {
+            onView(withId(R.id.notificationSwitch)).check(matches(isChecked()));
+            onView(withId(R.id.notificationSwitch)).perform(click());
+            assertTrue(SettingsActivity.mBuilder == null);
+            assertTrue(SettingsActivity.alarmManager == null);
+        } catch (AssertionFailedError e) {
+            assertTrue(SettingsActivity.mBuilder == null);
+            assertTrue(SettingsActivity.alarmManager == null);
+        }finally {
+            Intents.release();
+        }
+
+    }
+
+    @Test
+    public void HCheckWebView() {
         Intents.init();
         onView(withId(R.id.recyclerview)).perform(click());
         intended(hasComponent(WebActivity.class.getName()));

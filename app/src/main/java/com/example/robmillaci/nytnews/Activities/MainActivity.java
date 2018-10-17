@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements NewsListAsynchTas
     private static final String CHANNEL_ID = "NYTNotification";
     private final String API_KEY = Constants.API_KEY;
 
-    @SuppressWarnings("ConstantConditions")
+    @SuppressWarnings({"ConstantConditions", "unchecked"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -258,6 +258,8 @@ public class MainActivity extends AppCompatActivity implements NewsListAsynchTas
             if (notificationManager != null) notificationManager.createNotificationChannel(channel);
         }
     }
+
+    //ToDo check search activity results 
 
 
 }
