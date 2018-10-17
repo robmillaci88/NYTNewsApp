@@ -1,4 +1,4 @@
-package com.example.robmillaci.nytnews;
+package com.example.robmillaci.nytnews.Activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -8,21 +8,21 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-
+import com.example.robmillaci.nytnews.Adaptors.SearchAdaptor;
+import com.example.robmillaci.nytnews.Models.SearchNewsObjectModel;
+import com.example.robmillaci.nytnews.R;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchResults extends AppCompatActivity {
+public class SearchResultsActivity extends AppCompatActivity {
     RecyclerView searchResultsRecyclerView;
-    ArrayList<DownloadSearchData.searchNewsObjects> data;
+    ArrayList<SearchNewsObjectModel> data;
     ImageView noResultsImage;
     ConstraintLayout mLayout;
     SearchAdaptor mAdaptor;
@@ -31,8 +31,9 @@ public class SearchResults extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_searchresults);
+        //noinspection ConstantConditions
         getSupportActionBar().setDisplayHomeAsUpEnabled(true); //adds a home button to the support action bar
-        setTitle("Search Results");
+        setTitle("SearchActivity Results");
 
         SharedPreferences prefs = getSharedPreferences("myPrefs", MODE_PRIVATE);
         if (prefs != null) {
@@ -52,7 +53,7 @@ public class SearchResults extends AppCompatActivity {
         String dataString = searchIntent.getStringExtra("dataArray");
 
         Gson gson = new Gson();
-        Type type = new TypeToken<ArrayList<DownloadSearchData.searchNewsObjects>>() {
+        Type type = new TypeToken<ArrayList<SearchNewsObjectModel>>() {
         }.getType();
 
         data = gson.fromJson(dataString, type);
@@ -62,7 +63,7 @@ public class SearchResults extends AppCompatActivity {
             mLayout.setBackgroundColor(Color.WHITE);
             noResultsImage.setVisibility(View.VISIBLE);
         } else {
-            mAdaptor = new SearchAdaptor(data, SearchResults.this);
+            mAdaptor = new SearchAdaptor(data, SearchResultsActivity.this);
             searchResultsRecyclerView.setAdapter(mAdaptor);
         }
     }
@@ -91,6 +92,6 @@ public class SearchResults extends AppCompatActivity {
         Gson gson = new Gson();
         String searchReadArray = gson.toJson(SearchAdaptor.articlesReadArray);
         sharedEditor.putString("searchReadArray", searchReadArray);
-        sharedEditor.commit();
+        sharedEditor.apply();
     }
 }

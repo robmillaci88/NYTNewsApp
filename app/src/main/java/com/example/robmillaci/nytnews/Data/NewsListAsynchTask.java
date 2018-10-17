@@ -1,7 +1,9 @@
-package com.example.robmillaci.nytnews;
+package com.example.robmillaci.nytnews.Data;
 
 import android.os.AsyncTask;
-import android.util.Log;
+
+import com.example.robmillaci.nytnews.Models.NewsObjectModel;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -11,12 +13,12 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class DownloadData extends AsyncTask<String, Integer, ArrayList> {
-    ArrayList<newsObjects> objects = new ArrayList();
+public class NewsListAsynchTask extends AsyncTask<String, Integer, ArrayList> {
+    ArrayList<NewsObjectModel> objects = new ArrayList();
     JSONObject reader;
     DownloadDataCallback mDownloadDataCallback;
 
-    public DownloadData(DownloadDataCallback downloadDataCallback) {
+    public NewsListAsynchTask(DownloadDataCallback downloadDataCallback) {
         mDownloadDataCallback = downloadDataCallback;
     }
 
@@ -35,7 +37,6 @@ public class DownloadData extends AsyncTask<String, Integer, ArrayList> {
             String line;
             while ((line = br.readLine()) != null) {
                 sb.append(line + "\n");
-                Log.d("downloading", "doInBackground: " + line);
             }
 
             reader = new JSONObject(sb.toString());
@@ -55,7 +56,7 @@ public class DownloadData extends AsyncTask<String, Integer, ArrayList> {
                     JSONArray multimedia = item.getJSONArray("multimedia");
                     JSONObject mediaObject = (JSONObject) multimedia.get(1);
                     String imgLink = mediaObject.getString("url");
-                    newsObjects newsObject = new newsObjects(section, subsection, title, abStract, link, byLine, pubdate, imgLink);
+                    NewsObjectModel newsObject = new NewsObjectModel(section, subsection, title, abStract, link, byLine, pubdate, imgLink);
                     objects.add(newsObject);
                 } catch (JSONException e){
                     e.getMessage();
@@ -66,15 +67,12 @@ public class DownloadData extends AsyncTask<String, Integer, ArrayList> {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return objects;
     }
 
     @Override
     protected void onProgressUpdate(Integer... values) {
-        Log.d("progress", "onProgressUpdate: called");
         mDownloadDataCallback.progressUpdateCallback(values[0],values[1]);
-
     }
 
     @Override
@@ -82,62 +80,8 @@ public class DownloadData extends AsyncTask<String, Integer, ArrayList> {
        mDownloadDataCallback.downloadFinished(a);
     }
 
-    public class newsObjects {
-        String section = "";
-        String subsection = "";
-        String title = "";
-        String abStract = "";
-        String link = "";
-        String byLine = "";
-        String pubDate = "";
-        String imgUrl = "";
 
-        public newsObjects(String section, String subsection, String title, String abStract, String url, String byLine, String pubDate, String imgUrl) {
-            this.section = section;
-            this.subsection = subsection;
-            this.title = title;
-            this.abStract = abStract;
-            this.link = url;
-            this.byLine = byLine;
-            this.pubDate = pubDate;
-            this.imgUrl = imgUrl;
-            Log.d("news", "newsObjects: object created");
-        }
-
-        public String getImgUrl() {
-            return imgUrl;
-        }
-
-        public String getSection() {
-            return section;
-        }
-
-        public String getSubsection() {
-            return subsection;
-        }
-
-        public String getTitle() {
-            return title;
-        }
-
-        public String getAbStract() {
-            return abStract;
-        }
-
-        public String getLink() {
-            return link;
-        }
-
-        public String getByLine() {
-            return byLine;
-        }
-
-        public String getPubDate() {
-            return pubDate;
-        }
-    }
-
-    interface DownloadDataCallback{
+    public interface DownloadDataCallback{
         void downloadFinished(ArrayList downloadData);
         void progressUpdateCallback(Integer... values);
     }

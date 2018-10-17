@@ -1,19 +1,19 @@
-package com.example.robmillaci.nytnews;
+package com.example.robmillaci.nytnews.Adaptors;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
+import com.example.robmillaci.nytnews.Activities.WebActivity;
+import com.example.robmillaci.nytnews.Models.TopNewsObjectModel;
+import com.example.robmillaci.nytnews.R;
 import com.squareup.picasso.Picasso;
-
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -21,16 +21,17 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
+
 public class MostPopularAdaptor extends RecyclerView.Adapter<MostPopularAdaptor.MyViewHolder> {
-    ArrayList downloadedData;
-    Context mContext;
-    static ArrayList<String> articlesReadArray;
+    private ArrayList downloadedData;
+    private Context mContext;
+    public static ArrayList<String> articlesReadArray;
 
 
     public MostPopularAdaptor(ArrayList downloadedData, Context context) {
         this.downloadedData = downloadedData;
         this.mContext = context;
-        if (articlesReadArray == null){
+        if (articlesReadArray == null) {
             articlesReadArray = new ArrayList<>();
         }
     }
@@ -42,9 +43,10 @@ public class MostPopularAdaptor extends RecyclerView.Adapter<MostPopularAdaptor.
         return new MostPopularAdaptor.MyViewHolder(view);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull final MyViewHolder holder, int position) {
-        final DownloadMostPopularData.topnewsObjects object = (DownloadMostPopularData.topnewsObjects) downloadedData.get(position);
+        final TopNewsObjectModel object = (TopNewsObjectModel) downloadedData.get(position);
         holder.title.setText(object.getTitle());
         holder.abStract.setText(object.getAbStract());
         holder.link.setText(object.getLink());
@@ -56,12 +58,12 @@ public class MostPopularAdaptor extends RecyclerView.Adapter<MostPopularAdaptor.
 
         try {
             Date date = inputFormat.parse(rawDate);
-            holder.pubDate.setText("Published data: " + outputFormat.format(date));
+            holder.pubDate.setText(mContext.getString(R.string.publishedDate) + outputFormat.format(date));
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
-        if (object.getImgUrl().equals("noImage")){
+        if (object.getImgUrl().equals("noImage")) {
             holder.newsImage.setImageResource(R.drawable.noimage);
         } else {
             Picasso.with(mContext).load(object.getImgUrl()).into(holder.newsImage);
@@ -70,8 +72,8 @@ public class MostPopularAdaptor extends RecyclerView.Adapter<MostPopularAdaptor.
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mContext,WebActivity.class);
-                intent.putExtra("url",object.getLink());
+                Intent intent = new Intent(mContext, WebActivity.class);
+                intent.putExtra("url", object.getLink());
                 mContext.startActivity(intent);
                 articlesReadArray.add(holder.link.getText().toString());
                 notifyDataSetChanged();
@@ -79,8 +81,7 @@ public class MostPopularAdaptor extends RecyclerView.Adapter<MostPopularAdaptor.
             }
         });
 
-        for (String s : articlesReadArray) {
-            Log.d("array", "onBindViewHolder: " + s );
+        for (Object s : articlesReadArray) {
             if (s.equals(holder.link.getText().toString())) {
                 holder.getRead().setVisibility(View.VISIBLE);
                 holder.getReadText().setVisibility(View.VISIBLE);
@@ -122,6 +123,7 @@ public class MostPopularAdaptor extends RecyclerView.Adapter<MostPopularAdaptor.
         public ImageView getRead() {
             return read;
         }
+
         public TextView getReadText() {
             return readText;
         }

@@ -1,13 +1,13 @@
-package com.example.robmillaci.nytnews;
+package com.example.robmillaci.nytnews.Utils;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-public class NotificationRecurrance extends BroadcastReceiver {
+public class NotificationsReciever extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Schedule.setNotifcationHasBeenSent(false);
+        ScheduleBroadcastReciever.setNotifcationHasBeenSent(false);
     }
 }

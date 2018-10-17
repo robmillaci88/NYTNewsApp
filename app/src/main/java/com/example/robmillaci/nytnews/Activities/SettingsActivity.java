@@ -1,4 +1,4 @@
-package com.example.robmillaci.nytnews;
+package com.example.robmillaci.nytnews.Activities;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -13,16 +13,21 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.robmillaci.nytnews.R;
+import com.example.robmillaci.nytnews.Utils.GsonHelper;
+import com.example.robmillaci.nytnews.Utils.ScheduleBroadcastReciever;
+import com.example.robmillaci.nytnews.Utils.SharedPreferencesHelper;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class Settings extends AppCompatActivity {
-    static NotificationCompat.Builder mBuilder;
+public class SettingsActivity extends AppCompatActivity {
+    public static NotificationCompat.Builder mBuilder;
     private static final String CHANNEL_ID = "NYTNotification";
     Switch notificationSwitch;
     Context mContext;
-    static ArrayList<CheckBox> settingsCheckBoxes;
-    AlarmManager alarmManager;
+    public static ArrayList<CheckBox> settingsCheckBoxes;
+    public static AlarmManager alarmManager;
     ArrayList<String> checkedArrayList;
 
     CheckBox foodSettingsCheckBox;
@@ -42,6 +47,7 @@ public class Settings extends AppCompatActivity {
         boolean display = getIntent().getBooleanExtra("display", true);
         setContentView(R.layout.activity_settings);
 
+        //noinspection ConstantConditions
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mContext = this;
 
@@ -88,6 +94,7 @@ public class Settings extends AppCompatActivity {
         notificationSwitch = findViewById(R.id.notificationSwitch);
 
         try {
+            //noinspection unchecked
             checkedArrayList = GsonHelper.getMyArray(mContext, "checkBoxVals");
             for (String s : checkedArrayList) {
                 switch (s) {
@@ -117,7 +124,7 @@ public class Settings extends AppCompatActivity {
                 }
             }
         } catch (Exception e) {
-            checkedArrayList = new ArrayList<String>();
+            checkedArrayList = new ArrayList<>();
         }
 
         notificationSearchTerm.setText(sharedPreferencesHelper.getString("myPrefs", "searchTerm", ""));
@@ -138,7 +145,7 @@ public class Settings extends AppCompatActivity {
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         PendingIntent pendingIntent = PendingIntent.getActivity(mContext, 0, intent, 0);
 
-                        mBuilder = new NotificationCompat.Builder(Settings.this, CHANNEL_ID)
+                        mBuilder = new NotificationCompat.Builder(SettingsActivity.this, CHANNEL_ID)
                                 .setSmallIcon(R.drawable.read)
                                 .setContentTitle("NYT news items")
                                 .setContentText("There are new news items you might be interested in")
@@ -156,7 +163,7 @@ public class Settings extends AppCompatActivity {
 
                     //cancel the alarm
                     if (alarmManager != null) {
-                        Intent intentAlarm = new Intent(mContext, Schedule.class);
+                        Intent intentAlarm = new Intent(mContext, ScheduleBroadcastReciever.class);
                         alarmManager.cancel(PendingIntent.getBroadcast(mContext, 1, intentAlarm, PendingIntent.FLAG_CANCEL_CURRENT));
 
                     }
@@ -181,8 +188,8 @@ public class Settings extends AppCompatActivity {
         long scheduleTime = c.getTimeInMillis(); //the first alarm is set to run at 9am the next day
 
         // Create an Intent and set the class that will execute when the Alarm triggers. Here we have
-        // specified Schedule class in the Intent. The onReceive() method of this class will execute when the broadcast from the alarm is received.
-        Intent intentAlarm = new Intent(mContext, Schedule.class);
+        // specified ScheduleBroadcastReciever class in the Intent. The onReceive() method of this class will execute when the broadcast from the alarm is received.
+        Intent intentAlarm = new Intent(mContext, ScheduleBroadcastReciever.class);
 
         // Get the Alarm Service.
         alarmManager = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
@@ -194,9 +201,7 @@ public class Settings extends AppCompatActivity {
 
     }
 
-    public ArrayList<CheckBox> getSettingsCheckBoxes() {
-        return settingsCheckBoxes;
-    }
+
 
     public TextView getNotificationSearchTerm() {
         return notificationSearchTerm;
@@ -208,7 +213,7 @@ public class Settings extends AppCompatActivity {
         boolean isChecked = notificationSwitch.isChecked();
         sharedPreferencesHelper.booleanToSharedPreferences("notificationSwitch", isChecked);
 
-        checkedArrayList = new ArrayList();
+        checkedArrayList = new ArrayList<>();
         for (CheckBox c : settingsCheckBoxes) {
             if (c.isChecked()) {
                 checkedArrayList.add(c.getTag().toString());

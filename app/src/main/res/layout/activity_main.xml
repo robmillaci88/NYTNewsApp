@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".Activities.MainActivity">
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -32,16 +32,19 @@
         app:tabTextColor="@color/lightblue">
 
         <android.support.design.widget.TabItem
+            android:id="@+id/topStories"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Top Stories" />
 
         <android.support.design.widget.TabItem
+            android:id="@+id/mostPop"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Most Popular" />
 
         <android.support.design.widget.TabItem
+            android:id="@+id/business"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Business" />

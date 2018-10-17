@@ -1,4 +1,4 @@
-package com.example.robmillaci.nytnews;
+package com.example.robmillaci.nytnews.Adaptors;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,6 +11,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.robmillaci.nytnews.Data.SearchNewsItemsAsynchTask;
+import com.example.robmillaci.nytnews.Models.SearchNewsObjectModel;
+import com.example.robmillaci.nytnews.R;
+import com.example.robmillaci.nytnews.Activities.WebActivity;
 import com.squareup.picasso.Picasso;
 
 import java.text.DateFormat;
@@ -22,9 +26,9 @@ import java.util.Locale;
 
 public class SearchAdaptor extends RecyclerView.Adapter<SearchAdaptor.MyViewHolder> {
 
-    ArrayList downloadedData;
-    Context mContext;
-    static ArrayList<String> articlesReadArray;
+    private ArrayList downloadedData;
+    private Context mContext;
+    public static ArrayList<String> articlesReadArray;
 
 
     public SearchAdaptor(ArrayList downloadedData, Context mContext) {
@@ -45,7 +49,7 @@ public class SearchAdaptor extends RecyclerView.Adapter<SearchAdaptor.MyViewHold
 
     @Override
     public void onBindViewHolder(@NonNull final MyViewHolder holder, int position) {
-        final DownloadSearchData.searchNewsObjects object = (DownloadSearchData.searchNewsObjects) downloadedData.get(position);
+        final SearchNewsObjectModel object = (SearchNewsObjectModel) downloadedData.get(position);
         holder.headline.setText(object.getHeadline());
         holder.snippet.setText(object.getSnippet());
 
@@ -100,12 +104,11 @@ public class SearchAdaptor extends RecyclerView.Adapter<SearchAdaptor.MyViewHold
         TextView headline;
         TextView snippet;
         TextView pubDate;
-        TextView weblink;
         ImageView read;
         ImageView searchImage;
         TextView readText;
 
-        public MyViewHolder(View itemView) {
+        MyViewHolder(View itemView) {
             super(itemView);
             this.headline = itemView.findViewById(R.id.headline);
             this.snippet = itemView.findViewById(R.id.snippet);

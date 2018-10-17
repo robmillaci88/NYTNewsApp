@@ -11,7 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".Activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -19,19 +19,19 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".WebActivity" />
+        <activity android:name=".Activities.WebActivity" />
         <activity
-            android:name=".Search"
-            android:parentActivityName=".MainActivity" />
-        <activity android:name=".SearchResults" />
-        <activity android:name=".Settings"
-            android:parentActivityName=".MainActivity"/>
+            android:name=".Activities.SearchActivity"
+            android:parentActivityName=".Activities.MainActivity" />
+        <activity android:name=".Activities.SearchResultsActivity" />
+        <activity android:name=".Activities.SettingsActivity"
+            android:parentActivityName=".Activities.MainActivity"/>
 
         <receiver
-            android:name="com.example.robmillaci.nytnews.Schedule"
+            android:name="com.example.robmillaci.nytnews.Utils.ScheduleBroadcastReciever"
             android:enabled="true" />
         <receiver
-            android:name="com.example.robmillaci.nytnews.NotificationRecurrance"
+            android:name="com.example.robmillaci.nytnews.Utils.NotificationsReciever"
             android:enabled="true" />
     </application>
 

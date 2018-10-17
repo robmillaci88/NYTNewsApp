@@ -1,7 +1,9 @@
-package com.example.robmillaci.nytnews;
+package com.example.robmillaci.nytnews.Data;
 
 import android.os.AsyncTask;
 import android.util.Log;
+
+import com.example.robmillaci.nytnews.Models.TopNewsObjectModel;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -12,13 +14,12 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class DownloadMostPopularData extends AsyncTask<String, Integer, ArrayList> {
-    ArrayList<DownloadMostPopularData.topnewsObjects> objects = new ArrayList();
-    JSONObject reader;
-    DownloadMostPopularDataCallback mDownloadMostPopularDataCallback;
-    String category = "";
+public class MostPopulareNewsAysnchTask extends AsyncTask<String, Integer, ArrayList> {
+    private ArrayList<TopNewsObjectModel> objects = new ArrayList<>();
+    private DownloadMostPopularDataCallback mDownloadMostPopularDataCallback;
+    private String category;
 
-    public DownloadMostPopularData(DownloadMostPopularDataCallback downloadMostPopularDataCallback, String category) {
+    public MostPopulareNewsAysnchTask(DownloadMostPopularDataCallback downloadMostPopularDataCallback, String category) {
         mDownloadMostPopularDataCallback = downloadMostPopularDataCallback;
         this.category = category;
     }
@@ -26,7 +27,7 @@ public class DownloadMostPopularData extends AsyncTask<String, Integer, ArrayLis
     @Override
     protected ArrayList doInBackground(String... strings) {
         StringBuilder sb = new StringBuilder();
-        URL url = null;
+        URL url;
         try {
             url = new URL(strings[0]);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -35,10 +36,10 @@ public class DownloadMostPopularData extends AsyncTask<String, Integer, ArrayLis
 
             String line;
             while ((line = br.readLine()) != null) {
-                sb.append(line + "\n");
+                sb.append(line).append("\n");
             }
 
-            reader = new JSONObject(sb.toString());
+            JSONObject reader = new JSONObject(sb.toString());
             JSONArray items = reader.getJSONArray("results");
             for (int i = 0; i < items.length(); i++) {
                 publishProgress(i,items.length());
@@ -56,8 +57,7 @@ public class DownloadMostPopularData extends AsyncTask<String, Integer, ArrayLis
                 JSONObject imgArray = metaArray.getJSONObject(1);
                 String imgUrl = imgArray.getString("url");
 
-
-                DownloadMostPopularData.topnewsObjects newsObject = new DownloadMostPopularData.topnewsObjects(section, title, abStract, link, byLine, pubdate, imgUrl);
+                TopNewsObjectModel newsObject = new TopNewsObjectModel(section, title, abStract, link, byLine, pubdate, imgUrl);
                 objects.add(newsObject);
             }
 
@@ -79,57 +79,8 @@ public class DownloadMostPopularData extends AsyncTask<String, Integer, ArrayLis
         mDownloadMostPopularDataCallback.popularDataDownloadFinished(arrayList,category);
     }
 
-    public class topnewsObjects {
-        String section = "";
-        String title = "";
-        String abStract = "";
-        String link = "";
-        String byLine = "";
-        String pubDate = "";
-        String imgUrl = "";
 
-        public topnewsObjects(String section, String title, String abStract, String url, String byLine, String pubDate, String imgUrl) {
-            this.section = section;
-            this.title = title;
-            this.abStract = abStract;
-            this.link = url;
-            this.byLine = byLine;
-            this.pubDate = pubDate;
-            this.imgUrl = imgUrl;
-            Log.d("news", "newsObjects: object created");
-        }
-
-        public String getImgUrl() {
-            return imgUrl;
-        }
-
-        public String getSection() {
-            return section;
-        }
-
-
-        public String getTitle() {
-            return title;
-        }
-
-        public String getAbStract() {
-            return abStract;
-        }
-
-        public String getLink() {
-            return link;
-        }
-
-        public String getByLine() {
-            return byLine;
-        }
-
-        public String getPubDate() {
-            return pubDate;
-        }
-    }
-
-    interface DownloadMostPopularDataCallback{
+    public interface DownloadMostPopularDataCallback{
         void popularDataDownloadFinished(ArrayList data,String category);
         void progressUpdateCallback(Integer... values);
     }

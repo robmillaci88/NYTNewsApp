@@ -1,4 +1,4 @@
-package com.example.robmillaci.nytnews;
+package com.example.robmillaci.nytnews.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +13,8 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.robmillaci.nytnews.Data.SearchNewsItemsAsynchTask;
+import com.example.robmillaci.nytnews.R;
 import com.google.gson.Gson;
 
 import java.text.DateFormat;
@@ -22,7 +24,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
-public class Search extends AppCompatActivity implements DownloadSearchData.downloadcallback {
+public class SearchActivity extends AppCompatActivity implements SearchNewsItemsAsynchTask.downloadcallback {
     TextView fromDate;
     TextView toDate;
     Button searchButton;
@@ -38,21 +40,19 @@ public class Search extends AppCompatActivity implements DownloadSearchData.down
     ArrayList data;
     ArrayList<CheckBox> searchSubjectsArray;
 
-
-
     ArrayList<CheckBox> checkBoxArray;
     com.takisoft.datetimepicker.DatePickerDialog mDatePickerDialog;
-    private String searchURL = "https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=166a1190cb80486a87ead710d48139ae&q=";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+        //noinspection ConstantConditions
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        setTitle("Search Articles");
+        setTitle("SearchActivity Articles");
 
         data = new ArrayList();
-        mDatePickerDialog = new com.takisoft.datetimepicker.DatePickerDialog(Search.this);
+        mDatePickerDialog = new com.takisoft.datetimepicker.DatePickerDialog(SearchActivity.this);
 
         searchButton = findViewById(R.id.searchButton);
         fromDate = findViewById(R.id.fromDate);
@@ -108,7 +108,7 @@ public class Search extends AppCompatActivity implements DownloadSearchData.down
                 if(isReadyTosearch()){
                     try {
                         buildSearchUrl();
-                        searchButton.setText("SEARCHING");
+                        searchButton.setText(R.string.searchBtnSearching);
                         searchButton.setClickable(false);
                         searchButton.setBackgroundResource(R.drawable.search_button_style_clicked);
                     } catch (ParseException e) {
@@ -122,6 +122,7 @@ public class Search extends AppCompatActivity implements DownloadSearchData.down
 
     private void buildSearchUrl() throws ParseException {
         StringBuilder url = new StringBuilder();
+        String searchURL = "https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=166a1190cb80486a87ead710d48139ae&q=";
         url.append(searchURL);
         url.append(searchTermText.getText());
         url.append("&fq=news_desk:(");
@@ -139,7 +140,7 @@ public class Search extends AppCompatActivity implements DownloadSearchData.down
                 if (checkedCount>=1){
                     url.append(" ");
                 }
-                url.append("\"" +c.getText().toString()).append("\"");
+                url.append("\"").append(c.getText().toString()).append("\"");
                 checkedCount ++;
             }
         }
@@ -164,7 +165,7 @@ public class Search extends AppCompatActivity implements DownloadSearchData.down
 
         try {
             Log.d("url", "buildSearchUrl: URL IS " + url.toString());
-          new DownloadSearchData(this).execute(url.toString());
+          new SearchNewsItemsAsynchTask(this).execute(url.toString());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -210,11 +211,11 @@ public class Search extends AppCompatActivity implements DownloadSearchData.down
     public void downloadFinished(ArrayList resultData) {
         data = resultData;
 
-        searchButton.setText("SEARCH");
+        searchButton.setText(R.string.SearchBtnSearch);
         searchButton.setClickable(true);
         searchButton.setBackgroundResource(R.drawable.search_button_style);
 
-        Intent searchIntent = new Intent(this,SearchResults.class);
+        Intent searchIntent = new Intent(this,SearchResultsActivity.class);
         Gson gson = new Gson();
         String dataArray =gson.toJson(data);
         searchIntent.putExtra("dataArray",dataArray);

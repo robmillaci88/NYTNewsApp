@@ -1,4 +1,4 @@
-package com.example.robmillaci.nytnews;
+package com.example.robmillaci.nytnews.Activities;
 
 import android.annotation.SuppressLint;
 import android.app.NotificationChannel;
@@ -20,15 +20,18 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import com.example.robmillaci.nytnews.Adaptors.MostPopularAdaptor;
+import com.example.robmillaci.nytnews.Adaptors.RecyclerViewAdaptor;
+import com.example.robmillaci.nytnews.Data.MostPopulareNewsAysnchTask;
+import com.example.robmillaci.nytnews.Data.NewsListAsynchTask;
+import com.example.robmillaci.nytnews.R;
+import com.example.robmillaci.nytnews.Utils.Constants;
+import com.example.robmillaci.nytnews.Utils.GsonHelper;
+import com.example.robmillaci.nytnews.Utils.SharedPreferencesHelper;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements DownloadData.DownloadDataCallback, DownloadMostPopularData.DownloadMostPopularDataCallback {
+public class MainActivity extends AppCompatActivity implements NewsListAsynchTask.DownloadDataCallback, MostPopulareNewsAysnchTask.DownloadMostPopularDataCallback {
     RecyclerView newsItemsRecyclerView;
     ArrayList data;
     TabLayout mTabLayout;
@@ -39,18 +42,21 @@ public class MainActivity extends AppCompatActivity implements DownloadData.Down
     ProgressBar loadProgressBar;
 
     private static final String CHANNEL_ID = "NYTNotification";
+    private final String API_KEY = Constants.API_KEY;
 
+    @SuppressWarnings("ConstantConditions")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //noinspection ConstantConditions
         getSupportActionBar().setElevation(0);
         createNotificationChannel();
         prefsHelper = new SharedPreferencesHelper(this, "myPrefs", MODE_PRIVATE);
 
         //restore settings and notification when app is reCreated
-        Intent i = new Intent(this, Settings.class);
-        i.putExtra("display",false);
+        Intent i = new Intent(this, SettingsActivity.class);
+        i.putExtra("display", false);
         startActivity(i);
 
         SharedPreferences prefs = getSharedPreferences("myPrefs", MODE_PRIVATE);
@@ -79,19 +85,19 @@ public class MainActivity extends AppCompatActivity implements DownloadData.Down
                     case 0:
                         //selected top stories
                         popularTabs.setVisibility(View.GONE);
-                        new DownloadData(MainActivity.this).execute("http://api.nytimes.com/svc/topstories/v2/home.json?api-key=166a1190cb80486a87ead710d48139ae");
+                        new NewsListAsynchTask(MainActivity.this).execute(Constants.POPULAR_NEWS_URL + API_KEY);
                         break;
 
                     case 1:
                         //selected most popular
                         popularTabs.setVisibility(View.VISIBLE);
-                        getData("https://api.nytimes.com/svc/mostpopular/v2/mostviewed/Food/30.json?api-key=166a1190cb80486a87ead710d48139ae");
+                        getData(Constants.MOST_POPULAR_FOOD_URL + API_KEY);
                         break;
 
                     case 2:
                         //selected business
                         popularTabs.setVisibility(View.GONE);
-                        getData("https://api.nytimes.com/svc/mostpopular/v2/mostviewed/Business%20Day/30.json?api-key=166a1190cb80486a87ead710d48139ae");
+                        getData(Constants.MOST_POPULAR_BUSINESS_URL + API_KEY);
                         break;
                 }
             }
@@ -108,16 +114,16 @@ public class MainActivity extends AppCompatActivity implements DownloadData.Down
         });
 
 
-        switch (selectedTab){
+        switch (selectedTab) {
             case 0:
                 Log.d("downloadFinished", "onTabSelected: case 0 called");
                 mTabLayout.getTabAt(0).select();
-                new DownloadData(MainActivity.this).execute("http://api.nytimes.com/svc/topstories/v2/home.json?api-key=166a1190cb80486a87ead710d48139ae");
+                new NewsListAsynchTask(MainActivity.this).execute("http://api.nytimes.com/svc/topstories/v2/home.json?api-key=166a1190cb80486a87ead710d48139ae");
                 break;
 
             case 1:
                 mTabLayout.getTabAt(1).select();
-      //          getData("https://api.nytimes.com/svc/mostpopular/v2/mostviewed/Food/30.json?api-key=166a1190cb80486a87ead710d48139ae");
+                //          getData("https://api.nytimes.com/svc/mostpopular/v2/mostviewed/Food/30.json?api-key=166a1190cb80486a87ead710d48139ae");
                 break;
 
             case 2:
@@ -125,7 +131,6 @@ public class MainActivity extends AppCompatActivity implements DownloadData.Down
 //                getData("https://api.nytimes.com/svc/mostpopular/v2/mostviewed/Business%20Day/30.json?api-key=166a1190cb80486a87ead710d48139ae");
                 break;
         }
-
 
 
         popularTabs.addOnTabSelectedListener(new OnTabSelectedListener() {
@@ -181,9 +186,9 @@ public class MainActivity extends AppCompatActivity implements DownloadData.Down
 
     @Override
     public void progressUpdateCallback(Integer... values) {
-                loadProgressBar.setVisibility(View.VISIBLE);
-                loadProgressBar.setMax(values[1]);
-                loadProgressBar.setProgress(values[0]+1);
+        loadProgressBar.setVisibility(View.VISIBLE);
+        loadProgressBar.setMax(values[1]);
+        loadProgressBar.setProgress(values[0] + 1);
 
     }
 
@@ -198,11 +203,11 @@ public class MainActivity extends AppCompatActivity implements DownloadData.Down
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.search:
-                startActivity(new Intent(this, Search.class));
+                startActivity(new Intent(this, SearchActivity.class));
                 break;
 
             case R.id.settings:
-                startActivity(new Intent(this, Settings.class));
+                startActivity(new Intent(this, SettingsActivity.class));
                 break;
         }
 
@@ -211,7 +216,7 @@ public class MainActivity extends AppCompatActivity implements DownloadData.Down
 
     public void getData(String url) {
         try {
-            new DownloadMostPopularData(this, category).execute(url);
+            new MostPopulareNewsAysnchTask(this, category).execute(url);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -225,9 +230,9 @@ public class MainActivity extends AppCompatActivity implements DownloadData.Down
 
     @SuppressLint("ApplySharedPref")
     public void saveState() {
-        GsonHelper.storeMyArray(this,"RecyclerViewReadArray",RecyclerViewAdaptor.articlesReadArray);
-        GsonHelper.storeMyArray(this,"PopularRecycleViewReadArray",MostPopularAdaptor.articlesReadArray);
-        prefsHelper.intToSharedPreferences("selectedTab",selectedTab);
+        GsonHelper.storeMyArray(this, "RecyclerViewReadArray", RecyclerViewAdaptor.articlesReadArray);
+        GsonHelper.storeMyArray(this, "PopularRecycleViewReadArray", MostPopularAdaptor.articlesReadArray);
+        prefsHelper.intToSharedPreferences("selectedTab", selectedTab);
     }
 
 
@@ -250,7 +255,7 @@ public class MainActivity extends AppCompatActivity implements DownloadData.Down
             // Register the channel with the system;
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
 
-            if (notificationManager!= null) notificationManager.createNotificationChannel(channel);
+            if (notificationManager != null) notificationManager.createNotificationChannel(channel);
         }
     }
 

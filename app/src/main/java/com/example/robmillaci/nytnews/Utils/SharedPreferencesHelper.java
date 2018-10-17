@@ -1,4 +1,4 @@
-package com.example.robmillaci.nytnews;
+package com.example.robmillaci.nytnews.Utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;

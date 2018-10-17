@@ -3,4 +3,7 @@
     <string name="title_activity_search_results">searchResults</string>
     <string name="channel_name">newsNotification</string>
     <string name="channel_description">Notifcation to users of the app of new news items</string>
+    <string name="searchBtnSearching">SEARCHING</string>
+    <string name="SearchBtnSearch">SEARCH</string>
+    <string name="publishedDate">Published data:</string>
 </resources>

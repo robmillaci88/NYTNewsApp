@@ -1,10 +1,8 @@
-package com.example.robmillaci.nytnews;
+package com.example.robmillaci.nytnews.Data;
 
-import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
-import android.view.View;
-import android.widget.ProgressBar;
+
+import com.example.robmillaci.nytnews.Models.SearchNewsObjectModel;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -18,14 +16,14 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class DownloadSearchData extends AsyncTask<String, Integer, ArrayList> {
-    ArrayList<DownloadSearchData.searchNewsObjects> searchObjectsArray = new ArrayList<>();
+public class SearchNewsItemsAsynchTask extends AsyncTask<String, Integer, ArrayList> {
+    ArrayList<SearchNewsObjectModel> searchObjectsArray = new ArrayList<>();
     JSONObject reader;
     String imageUrl;
     downloadcallback mDownloadcallback;
     int objectsArraySize;
 
-    public DownloadSearchData(downloadcallback downloadcallback) {
+    public SearchNewsItemsAsynchTask(downloadcallback downloadcallback) {
         mDownloadcallback = downloadcallback;
     }
 
@@ -52,7 +50,7 @@ public class DownloadSearchData extends AsyncTask<String, Integer, ArrayList> {
                 JSONObject objHeadLine = arrayObject.getJSONObject("headline");
                 String headline = objHeadLine.getString("main");
 
-                DownloadSearchData.searchNewsObjects searchNewsObject = new DownloadSearchData.searchNewsObjects(headline, snippet, pubDate, webLink, imageUrl);
+                SearchNewsObjectModel searchNewsObject = new SearchNewsObjectModel(headline, snippet, pubDate, webLink, imageUrl);
                 searchObjectsArray.add(searchNewsObject);
 
             }
@@ -110,43 +108,7 @@ public class DownloadSearchData extends AsyncTask<String, Integer, ArrayList> {
         mDownloadcallback.downloadFinished(arrayList);
     }
 
-    public class searchNewsObjects {
-        String headline;
-        String snippet;
-        String pubDate;
-        String webLink;
-        String imageUrl;
-        int count = 0;
-
-
-        public searchNewsObjects(String headline, String snippet, String pubDate, String webLink, String imageUrl) {
-            this.headline = headline;
-            this.snippet = snippet;
-            this.pubDate = pubDate;
-            this.webLink = webLink;
-            this.imageUrl = imageUrl;
-        }
-
-        public String getWebLink() {
-            return webLink;
-        }
-
-        public String getHeadline() {
-            return headline;
-        }
-
-        public String getSnippet() {
-            return snippet;
-        }
-
-        public String getImageUrl() {
-            return imageUrl;
-        }
-    }
-
-
-
-    interface downloadcallback{
+    public interface downloadcallback{
         void mcallback(int progress);
         void downloadFinished(ArrayList resultData);
     }

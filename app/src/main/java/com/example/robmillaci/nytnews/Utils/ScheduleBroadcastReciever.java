@@ -1,4 +1,4 @@
-package com.example.robmillaci.nytnews;
+package com.example.robmillaci.nytnews.Utils;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -8,9 +8,12 @@ import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
 import android.widget.CheckBox;
 
+import com.example.robmillaci.nytnews.Activities.SettingsActivity;
+import com.example.robmillaci.nytnews.Data.MostPopulareNewsAysnchTask;
+
 import java.util.ArrayList;
 
-public class Schedule extends BroadcastReceiver implements DownloadMostPopularData.DownloadMostPopularDataCallback {
+public class ScheduleBroadcastReciever extends BroadcastReceiver implements MostPopulareNewsAysnchTask.DownloadMostPopularDataCallback {
     ArrayList foodData;
     ArrayList moviesData;
     ArrayList scienceData;
@@ -21,12 +24,11 @@ public class Schedule extends BroadcastReceiver implements DownloadMostPopularDa
     static boolean notifcationHasBeenSent;
     Context mContext;
     SharedPreferencesHelper mSharedPreferencesHelper;
-    final String BASE_URL = "https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=166a1190cb80486a87ead710d48139ae&hl=true&q=";
+    final String BASE_URL = Constants.ARTICLE_SEARCH_URL + Constants.API_KEY + Constants.ARTICLE_SEARCH_PARAMS;
 
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.d("NOTIFICATIONSCHEDULE", "onReceive: schedule called");
         notifcationHasBeenSent = false;
         mContext = context;
         mSharedPreferencesHelper = new SharedPreferencesHelper(mContext,"myPrefs",0);
@@ -43,39 +45,39 @@ public class Schedule extends BroadcastReceiver implements DownloadMostPopularDa
             e.printStackTrace();
         }
 
-        settingsCheckBoxes = Settings.settingsCheckBoxes;
+        settingsCheckBoxes = SettingsActivity.settingsCheckBoxes;
 
         for (CheckBox c : settingsCheckBoxes) {
             if (c.isChecked() && !notifcationHasBeenSent) {
                 switch (c.getTag().toString()) {
                     case "food":
-                        DownloadMostPopularData downloadMostPopularDataFood = new DownloadMostPopularData(this, "food");
+                        MostPopulareNewsAysnchTask downloadMostPopularDataFood = new MostPopulareNewsAysnchTask(this, "food");
                         downloadMostPopularDataFood.execute(BASE_URL + intentExtras.getString("searchTerm") + "fq=news_desk:(\"Food\")");
                         break;
 
                     case "science":
-                        DownloadMostPopularData downloadMostPopularDataScience = new DownloadMostPopularData(this, "science");
+                        MostPopulareNewsAysnchTask downloadMostPopularDataScience = new MostPopulareNewsAysnchTask(this, "science");
                         downloadMostPopularDataScience.execute(BASE_URL + intentExtras.getString("searchTerm") + "fq=news_desk:(\"Science\")");
                         break;
 
                     case "entre":
-                        DownloadMostPopularData downloadMostPopularDataEntre = new DownloadMostPopularData(this, "entrepreneur");
+                        MostPopulareNewsAysnchTask downloadMostPopularDataEntre = new MostPopulareNewsAysnchTask(this, "entrepreneur");
                         downloadMostPopularDataEntre.execute(BASE_URL + intentExtras.getString("searchTerm") + "fq=news_desk:(\"Entrepreneur\")");
                         break;
 
                     case "movies":
-                        DownloadMostPopularData downloadMostPopularDataMovie = new DownloadMostPopularData(this, "movies");
+                        MostPopulareNewsAysnchTask downloadMostPopularDataMovie = new MostPopulareNewsAysnchTask(this, "movies");
                         downloadMostPopularDataMovie.execute(BASE_URL + intentExtras.getString("searchTerm") + "fq=news_desk:(\"Movies\")");
                         break;
 
                     case "sport":
-                        DownloadMostPopularData downloadMostPopularDataSport = new DownloadMostPopularData(this, "sport");
+                        MostPopulareNewsAysnchTask downloadMostPopularDataSport = new MostPopulareNewsAysnchTask(this, "sport");
                         downloadMostPopularDataSport.execute(BASE_URL + intentExtras.getString("searchTerm") + "fq=news_desk:(\"Sport\")");
 
                         break;
 
                     case "travel":
-                        DownloadMostPopularData downloadMostPopularDataTravel = new DownloadMostPopularData(this, "travel");
+                        MostPopulareNewsAysnchTask downloadMostPopularDataTravel = new MostPopulareNewsAysnchTask(this, "travel");
                         downloadMostPopularDataTravel.execute(BASE_URL + intentExtras.getString("searchTerm") + "fq=news_desk:(\"Travel\")");
                         break;
                 }
@@ -180,11 +182,11 @@ public class Schedule extends BroadcastReceiver implements DownloadMostPopularDa
     }
 
     public void tryToFireNotification() {
-        if (Settings.mBuilder != null) {
+        if (SettingsActivity.mBuilder != null) {
             NotificationManagerCompat notificationManager = NotificationManagerCompat.from(mContext);
 
             // notificationId is a unique int for each notification that you must define
-            notificationManager.notify(1, Settings.mBuilder.build());
+            notificationManager.notify(1, SettingsActivity.mBuilder.build());
             notifcationHasBeenSent = true;
         }
     }
