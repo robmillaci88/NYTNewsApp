@@ -1,7 +1,6 @@
 package com.example.robmillaci.nytnews.Data;
 
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.example.robmillaci.nytnews.Models.TopNewsObjectModel;
 

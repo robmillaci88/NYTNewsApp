@@ -1,4 +1,4 @@
-package com.example.robmillaci.nytnews.Adaptors;
+package com.example.robmillaci.nytnews.Adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -22,13 +22,13 @@ import java.util.Date;
 import java.util.Locale;
 
 
-public class MostPopularAdaptor extends RecyclerView.Adapter<MostPopularAdaptor.MyViewHolder> {
+public class MostPopularAdapter extends RecyclerView.Adapter<MostPopularAdapter.MyViewHolder> {
     private ArrayList downloadedData;
     private Context mContext;
     public static ArrayList<String> articlesReadArray;
 
 
-    public MostPopularAdaptor(ArrayList downloadedData, Context context) {
+    public MostPopularAdapter(ArrayList downloadedData, Context context) {
         this.downloadedData = downloadedData;
         this.mContext = context;
         if (articlesReadArray == null) {
@@ -38,9 +38,9 @@ public class MostPopularAdaptor extends RecyclerView.Adapter<MostPopularAdaptor.
 
     @NonNull
     @Override
-    public MostPopularAdaptor.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public MostPopularAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_item, parent, false);
-        return new MostPopularAdaptor.MyViewHolder(view);
+        return new MostPopularAdapter.MyViewHolder(view);
     }
 
     @SuppressLint("SetTextI18n")

@@ -1,4 +1,4 @@
-package com.example.robmillaci.nytnews.Adaptors;
+package com.example.robmillaci.nytnews.Adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -21,12 +21,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
-public class RecyclerViewAdaptor extends RecyclerView.Adapter<RecyclerViewAdaptor.MyViewHolder> {
+public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder> {
     private ArrayList downloadedData;
     private Context mContext;
     public static ArrayList<String> articlesReadArray;
 
-    public RecyclerViewAdaptor(ArrayList downloadedData, Context context) {
+    public RecyclerViewAdapter(ArrayList downloadedData, Context context) {
         this.downloadedData = downloadedData;
         this.mContext = context;
         if (articlesReadArray == null) {
@@ -36,14 +36,14 @@ public class RecyclerViewAdaptor extends RecyclerView.Adapter<RecyclerViewAdapto
 
     @NonNull
     @Override
-    public RecyclerViewAdaptor.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public RecyclerViewAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_item, parent, false);
         return new MyViewHolder(view);
     }
 
     @SuppressLint("SetTextI18n")
     @Override
-    public void onBindViewHolder(@NonNull final RecyclerViewAdaptor.MyViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final RecyclerViewAdapter.MyViewHolder holder, final int position) {
         final NewsObjectModel object = (NewsObjectModel) downloadedData.get(position);
         holder.section.setText(object.getSection() + " > " + object.getSubsection());
         holder.title.setText(object.getTitle());

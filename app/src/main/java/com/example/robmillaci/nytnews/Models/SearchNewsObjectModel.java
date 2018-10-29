@@ -1,11 +1,11 @@
 package com.example.robmillaci.nytnews.Models;
 
 public class SearchNewsObjectModel {
-    String headline;
-    String snippet;
+   private String headline;
+    private String snippet;
     public String pubDate;
     public String webLink;
-    String imageUrl;
+    private String imageUrl;
 
     public SearchNewsObjectModel(String headline, String snippet, String pubDate, String webLink, String imageUrl) {
         this.headline = headline;

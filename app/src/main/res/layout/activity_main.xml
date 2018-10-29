@@ -32,19 +32,19 @@
         app:tabTextColor="@color/lightblue">
 
         <android.support.design.widget.TabItem
-            android:id="@+id/topStories"
+            android:id="@+id/top_stories_tab_item"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Top Stories" />
 
         <android.support.design.widget.TabItem
-            android:id="@+id/mostPop"
+            android:id="@+id/most_pop_tab_item"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Most Popular" />
 
         <android.support.design.widget.TabItem
-            android:id="@+id/business"
+            android:id="@+id/business_tab_item"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Business" />

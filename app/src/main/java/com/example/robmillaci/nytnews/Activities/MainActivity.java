@@ -20,8 +20,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 
-import com.example.robmillaci.nytnews.Adaptors.MostPopularAdaptor;
-import com.example.robmillaci.nytnews.Adaptors.RecyclerViewAdaptor;
+import com.example.robmillaci.nytnews.Adapters.MostPopularAdapter;
+import com.example.robmillaci.nytnews.Adapters.RecyclerViewAdapter;
 import com.example.robmillaci.nytnews.Data.MostPopulareNewsAysnchTask;
 import com.example.robmillaci.nytnews.Data.NewsListAsynchTask;
 import com.example.robmillaci.nytnews.R;
@@ -62,8 +62,8 @@ public class MainActivity extends AppCompatActivity implements NewsListAsynchTas
         SharedPreferences prefs = getSharedPreferences("myPrefs", MODE_PRIVATE);
         if (prefs != null) {
             try {
-                RecyclerViewAdaptor.articlesReadArray = GsonHelper.getMyArray(this, "RecyclerViewReadArray");
-                MostPopularAdaptor.articlesReadArray = GsonHelper.getMyArray(this, "PopularRecycleViewReadArray");
+                RecyclerViewAdapter.articlesReadArray = GsonHelper.getMyArray(this, "RecyclerViewReadArray");
+                MostPopularAdapter.articlesReadArray = GsonHelper.getMyArray(this, "PopularRecycleViewReadArray");
                 selectedTab = prefsHelper.getInt("myPrefs", "selectedTab", 0);
             } catch (Exception e) {
                 e.getMessage();
@@ -172,14 +172,14 @@ public class MainActivity extends AppCompatActivity implements NewsListAsynchTas
     public void downloadFinished(ArrayList downloadData) {
         Log.d("downloadFinished", "downloadFinished: reached here");
         data = downloadData;
-        newsItemsRecyclerView.setAdapter(new RecyclerViewAdaptor(data, getApplicationContext()));
+        newsItemsRecyclerView.setAdapter(new RecyclerViewAdapter(data, getApplicationContext()));
         loadProgressBar.setVisibility(View.GONE);
     }
 
     @Override
     public void popularDataDownloadFinished(ArrayList downloadData, String category) {
         data = downloadData;
-        newsItemsRecyclerView.setAdapter(new MostPopularAdaptor(data, getApplicationContext()));
+        newsItemsRecyclerView.setAdapter(new MostPopularAdapter(data, getApplicationContext()));
         loadProgressBar.setVisibility(View.GONE);
 
     }
@@ -230,8 +230,8 @@ public class MainActivity extends AppCompatActivity implements NewsListAsynchTas
 
     @SuppressLint("ApplySharedPref")
     public void saveState() {
-        GsonHelper.storeMyArray(this, "RecyclerViewReadArray", RecyclerViewAdaptor.articlesReadArray);
-        GsonHelper.storeMyArray(this, "PopularRecycleViewReadArray", MostPopularAdaptor.articlesReadArray);
+        GsonHelper.storeMyArray(this, "RecyclerViewReadArray", RecyclerViewAdapter.articlesReadArray);
+        GsonHelper.storeMyArray(this, "PopularRecycleViewReadArray", MostPopularAdapter.articlesReadArray);
         prefsHelper.intToSharedPreferences("selectedTab", selectedTab);
     }
 
@@ -259,7 +259,7 @@ public class MainActivity extends AppCompatActivity implements NewsListAsynchTas
         }
     }
 
-    //ToDo check search activity results 
+
 
 
 }

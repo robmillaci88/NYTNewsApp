@@ -38,7 +38,6 @@ import static org.junit.Assert.assertTrue;
  *
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @RunWith(AndroidJUnit4.class)
 public class UITests {
 
@@ -47,7 +46,7 @@ public class UITests {
             new ActivityTestRule<>(MainActivity.class);
 
     @Test
-    public void AuseAppContext() {
+    public void useAppContext() {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
@@ -55,7 +54,7 @@ public class UITests {
     }
 
     @Test
-    public void ACheckTabLayout() throws InterruptedException {
+    public void CheckTabLayout() throws InterruptedException {
         ViewInteraction tabLayout = onView(ViewMatchers.withId(R.id.tabLayout));
         tabLayout.check(matches(isEnabled()));
 
@@ -67,7 +66,7 @@ public class UITests {
     }
 
     @Test
-    public void BCheckMostPopularTab() throws InterruptedException {
+    public void CheckMostPopularTab() throws InterruptedException {
         //click to the 'most popular tab' and check that 1) the sub tab menu is displayed and then the recycler view contains values
         onView(withText("Most Popular")).perform(click());
         Thread.sleep(1000);
@@ -78,7 +77,7 @@ public class UITests {
     }
 
     @Test
-    public void CCheckBusinessTab() throws InterruptedException {
+    public void CheckBusinessTab() throws InterruptedException {
         //click to the 'business tab' and check that 1) the sub tab menu is displayed and then the recycler view contains values
         onView(withText("Business")).perform(click());
         Thread.sleep(1000);
@@ -89,7 +88,7 @@ public class UITests {
 
 
     @Test
-    public void DCheckSearchActivity() throws InterruptedException {
+    public void CheckSearchActivity() throws InterruptedException {
         Intents.init();
         onView(withId(R.id.search)).perform(click());
         Thread.sleep(1000);
@@ -100,7 +99,7 @@ public class UITests {
 
 
     @Test
-    public void ECheckSettingsActivity() throws InterruptedException {
+    public void CheckSettingsActivity() throws InterruptedException {
         Intents.init();
         openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
         Thread.sleep(1000);
@@ -111,7 +110,7 @@ public class UITests {
     }
 
     @Test
-    public void FCheckNotificationsSet() throws InterruptedException {
+    public void CheckNotificationsSet() throws InterruptedException {
         Intents.init();
         openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
         Thread.sleep(1000);
@@ -133,7 +132,7 @@ public class UITests {
     }
 
     @Test
-    public void GCheckTurnOffNotification() throws InterruptedException {
+    public void CheckTurnOffNotification() throws InterruptedException {
         Intents.init();
         openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
         Thread.sleep(1000);
@@ -154,11 +153,13 @@ public class UITests {
     }
 
     @Test
-    public void HCheckWebView() {
+    public void CheckWebView() {
         Intents.init();
         onView(withId(R.id.recyclerview)).perform(click());
         intended(hasComponent(WebActivity.class.getName()));
         Intents.release();
     }
 
+
+    //ToDo check search activity results
 }

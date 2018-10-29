@@ -14,9 +14,8 @@ import java.net.URL;
 import java.util.ArrayList;
 
 public class NewsListAsynchTask extends AsyncTask<String, Integer, ArrayList> {
-    ArrayList<NewsObjectModel> objects = new ArrayList();
-    JSONObject reader;
-    DownloadDataCallback mDownloadDataCallback;
+    private ArrayList<NewsObjectModel> objects = new ArrayList<>();
+    private DownloadDataCallback mDownloadDataCallback;
 
     public NewsListAsynchTask(DownloadDataCallback downloadDataCallback) {
         mDownloadDataCallback = downloadDataCallback;
@@ -25,8 +24,7 @@ public class NewsListAsynchTask extends AsyncTask<String, Integer, ArrayList> {
     @Override
     protected ArrayList doInBackground(String... strings) {
         StringBuilder sb = new StringBuilder();
-        URL url = null;
-
+        URL url;
 
         try {
             url = new URL(strings[0]);
@@ -36,10 +34,10 @@ public class NewsListAsynchTask extends AsyncTask<String, Integer, ArrayList> {
 
             String line;
             while ((line = br.readLine()) != null) {
-                sb.append(line + "\n");
+                sb.append(line).append("\n");
             }
 
-            reader = new JSONObject(sb.toString());
+            JSONObject reader = new JSONObject(sb.toString());
             JSONArray items = reader.getJSONArray("results");
             for (int i = 0; i < items.length(); i++) {
                 publishProgress(i,items.length());

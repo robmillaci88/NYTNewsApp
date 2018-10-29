@@ -11,7 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import com.example.robmillaci.nytnews.Adaptors.SearchAdaptor;
+import com.example.robmillaci.nytnews.Adapters.SearchAdaptor;
 import com.example.robmillaci.nytnews.Models.SearchNewsObjectModel;
 import com.example.robmillaci.nytnews.R;
 import com.google.gson.Gson;

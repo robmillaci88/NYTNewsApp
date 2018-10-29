@@ -21,22 +21,15 @@ public class GsonHelper {
         Gson gson = new Gson();
         String  jSon = gson.toJson(arrayList);
         sharedEditor.putString(arrayName, jSon);
-        sharedEditor.commit();
+        sharedEditor.apply();
     }
 
     public static String stringMyArrayList(ArrayList arrayList){
         Gson gson = new Gson();
-        String jSon = gson.toJson(arrayList);
-        return  jSon;
+        return  gson.toJson(arrayList);
     }
 
-    public static ArrayList arrayMyString(String s){
-        Gson gson = new Gson();
-        Type type = new TypeToken<List<?>>() {
-        }.getType();
 
-        return gson.fromJson(s, type);
-    }
 
     public static ArrayList getMyArray (Context mContext, String sharePreferenceName) throws Exception{
         Gson gson = new Gson();

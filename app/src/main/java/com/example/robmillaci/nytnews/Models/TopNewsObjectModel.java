@@ -1,13 +1,13 @@
 package com.example.robmillaci.nytnews.Models;
 
 public class TopNewsObjectModel {
-    String section;
-    String title;
-    String abStract;
-    String link;
-    String byLine;
-    String pubDate;
-    String imgUrl;
+    private String section;
+    private String title;
+    private String abStract;
+    private String link;
+    private String byLine;
+    private String pubDate;
+    private String imgUrl;
 
     public TopNewsObjectModel(String section, String title, String abStract, String url, String byLine, String pubDate, String imgUrl) {
         this.section = section;

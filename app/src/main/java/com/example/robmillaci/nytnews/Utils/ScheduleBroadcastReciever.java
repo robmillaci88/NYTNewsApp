@@ -52,32 +52,38 @@ public class ScheduleBroadcastReciever extends BroadcastReceiver implements Most
                 switch (c.getTag().toString()) {
                     case "food":
                         MostPopulareNewsAysnchTask downloadMostPopularDataFood = new MostPopulareNewsAysnchTask(this, "food");
+                        assert intentExtras != null;
                         downloadMostPopularDataFood.execute(BASE_URL + intentExtras.getString("searchTerm") + "fq=news_desk:(\"Food\")");
                         break;
 
                     case "science":
                         MostPopulareNewsAysnchTask downloadMostPopularDataScience = new MostPopulareNewsAysnchTask(this, "science");
+                        assert intentExtras != null;
                         downloadMostPopularDataScience.execute(BASE_URL + intentExtras.getString("searchTerm") + "fq=news_desk:(\"Science\")");
                         break;
 
                     case "entre":
                         MostPopulareNewsAysnchTask downloadMostPopularDataEntre = new MostPopulareNewsAysnchTask(this, "entrepreneur");
+                        assert intentExtras != null;
                         downloadMostPopularDataEntre.execute(BASE_URL + intentExtras.getString("searchTerm") + "fq=news_desk:(\"Entrepreneur\")");
                         break;
 
                     case "movies":
                         MostPopulareNewsAysnchTask downloadMostPopularDataMovie = new MostPopulareNewsAysnchTask(this, "movies");
+                        assert intentExtras != null;
                         downloadMostPopularDataMovie.execute(BASE_URL + intentExtras.getString("searchTerm") + "fq=news_desk:(\"Movies\")");
                         break;
 
                     case "sport":
                         MostPopulareNewsAysnchTask downloadMostPopularDataSport = new MostPopulareNewsAysnchTask(this, "sport");
+                        assert intentExtras != null;
                         downloadMostPopularDataSport.execute(BASE_URL + intentExtras.getString("searchTerm") + "fq=news_desk:(\"Sport\")");
 
                         break;
 
                     case "travel":
                         MostPopulareNewsAysnchTask downloadMostPopularDataTravel = new MostPopulareNewsAysnchTask(this, "travel");
+                        assert intentExtras != null;
                         downloadMostPopularDataTravel.execute(BASE_URL + intentExtras.getString("searchTerm") + "fq=news_desk:(\"Travel\")");
                         break;
                 }

@@ -179,7 +179,6 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     private void createNotificationAlarm() {
-
         Calendar c = Calendar.getInstance();
         c.add(Calendar.DATE, 1);
         c.set(Calendar.HOUR_OF_DAY, 9);

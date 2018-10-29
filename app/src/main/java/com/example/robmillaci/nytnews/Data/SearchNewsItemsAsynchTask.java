@@ -17,11 +17,8 @@ import java.net.URL;
 import java.util.ArrayList;
 
 public class SearchNewsItemsAsynchTask extends AsyncTask<String, Integer, ArrayList> {
-    ArrayList<SearchNewsObjectModel> searchObjectsArray = new ArrayList<>();
-    JSONObject reader;
-    String imageUrl;
-    downloadcallback mDownloadcallback;
-    int objectsArraySize;
+    private ArrayList<SearchNewsObjectModel> searchObjectsArray = new ArrayList<>();
+    private downloadcallback mDownloadcallback;
 
     public SearchNewsItemsAsynchTask(downloadcallback downloadcallback) {
         mDownloadcallback = downloadcallback;
@@ -32,25 +29,23 @@ public class SearchNewsItemsAsynchTask extends AsyncTask<String, Integer, ArrayL
         publishProgress(1);
         String data = downloadWebinfo(strings[0]);
         try {
-            reader = new JSONObject(data);
+            JSONObject reader = new JSONObject(data);
 
             JSONObject objects = reader.getJSONObject("response");
             JSONArray objectsArray = objects.getJSONArray("docs");
 
-            objectsArraySize = objectsArray.length();
             for (int i = 0; i < objectsArray.length(); i++) {
 
                 JSONObject arrayObject = (JSONObject) objectsArray.get(i);
                 final String webLink = arrayObject.getString("web_url");
 
-                imageUrl = downloadImage(downloadWebinfo(webLink));
+                String imageUrl = downloadImage(downloadWebinfo(webLink));
 
                 String snippet = arrayObject.getString("snippet");
-                String pubDate = arrayObject.getString("pub_date");
                 JSONObject objHeadLine = arrayObject.getJSONObject("headline");
                 String headline = objHeadLine.getString("main");
 
-                SearchNewsObjectModel searchNewsObject = new SearchNewsObjectModel(headline, snippet, pubDate, webLink, imageUrl);
+                SearchNewsObjectModel searchNewsObject = new SearchNewsObjectModel(headline, snippet, webLink, imageUrl);
                 searchObjectsArray.add(searchNewsObject);
 
             }
@@ -63,9 +58,8 @@ public class SearchNewsItemsAsynchTask extends AsyncTask<String, Integer, ArrayL
 
     private String downloadWebinfo(String uri) {
         StringBuilder sb = new StringBuilder();
-        URL url = null;
         try {
-            url = new URL(uri);
+            URL url = new URL(uri);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             InputStreamReader isr = new InputStreamReader(connection.getInputStream());
             BufferedReader br = new BufferedReader(isr);
@@ -90,7 +84,7 @@ public class SearchNewsItemsAsynchTask extends AsyncTask<String, Integer, ArrayL
             String extractedURL = element.toString().substring(index);
             int endIndex = extractedURL.indexOf("\"");
             return extractedURL.substring(0, endIndex);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return "noImage";
         }
@@ -108,8 +102,9 @@ public class SearchNewsItemsAsynchTask extends AsyncTask<String, Integer, ArrayL
         mDownloadcallback.downloadFinished(arrayList);
     }
 
-    public interface downloadcallback{
+    public interface downloadcallback {
         void mcallback(int progress);
+
         void downloadFinished(ArrayList resultData);
     }
 }

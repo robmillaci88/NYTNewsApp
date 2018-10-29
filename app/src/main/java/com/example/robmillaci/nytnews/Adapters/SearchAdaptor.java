@@ -1,4 +1,4 @@
-package com.example.robmillaci.nytnews.Adaptors;
+package com.example.robmillaci.nytnews.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.robmillaci.nytnews.Data.SearchNewsItemsAsynchTask;
 import com.example.robmillaci.nytnews.Models.SearchNewsObjectModel;
 import com.example.robmillaci.nytnews.R;
 import com.example.robmillaci.nytnews.Activities.WebActivity;
@@ -59,18 +58,15 @@ public class SearchAdaptor extends RecyclerView.Adapter<SearchAdaptor.MyViewHold
         String rawDate = object.pubDate;
 
         try {
-            Date date = inputFormat.parse(rawDate);
-            holder.pubDate.setText("Published data: " + outputFormat.format(date));
+            holder.pubDate.setText(mContext.getString(R.string.published_date, outputFormat.format(inputFormat.parse(rawDate))));
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
 
         if (object.getImageUrl().equals("noImage")) {
             holder.searchImage.setImageResource(R.drawable.noimage);
         } else {
             Picasso.with(mContext).load(object.getImageUrl()).into(holder.searchImage);
-
         }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
