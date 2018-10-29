@@ -2,9 +2,9 @@ package com.example.robmillaci.nytnews.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,27 +14,39 @@ import android.widget.TextView;
 import com.example.robmillaci.nytnews.Models.SearchNewsObjectModel;
 import com.example.robmillaci.nytnews.R;
 import com.example.robmillaci.nytnews.Activities.WebActivity;
+import com.example.robmillaci.nytnews.Utils.GsonHelper;
 import com.squareup.picasso.Picasso;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Locale;
 
-public class SearchAdaptor extends RecyclerView.Adapter<SearchAdaptor.MyViewHolder> {
+import static android.content.Context.MODE_PRIVATE;
 
-    private ArrayList downloadedData;
-    private Context mContext;
-    public static ArrayList<String> articlesReadArray;
+public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MyViewHolder> {
+
+    private ArrayList downloadedData; //arraylist to hold the downloaded data
+    private Context mContext; //the calling activities context
+    public static ArrayList<String> articlesReadArray; //arraylist holding the read articles
 
 
-    public SearchAdaptor(ArrayList downloadedData, Context mContext) {
+    public SearchAdapter(ArrayList downloadedData, Context mContext) {
         this.downloadedData = downloadedData;
         this.mContext = mContext;
+        SharedPreferences prefs = mContext.getSharedPreferences("myPrefs", MODE_PRIVATE);
+
+        if (prefs != null) {
+            try {
+                //restore previously read articles
+                //noinspection unchecked
+                articlesReadArray = GsonHelper.getMyArray(mContext, "RecyclerViewReadArray");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
         if (articlesReadArray == null) {
-            Log.d("doin", "SearchAdaptor: created new array list");
             articlesReadArray = new ArrayList<>();
         }
     }
@@ -43,19 +55,19 @@ public class SearchAdaptor extends RecyclerView.Adapter<SearchAdaptor.MyViewHold
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.search_recycler_view, parent, false);
-        return new SearchAdaptor.MyViewHolder(view);
+        return new SearchAdapter.MyViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull final MyViewHolder holder, int position) {
-        final SearchNewsObjectModel object = (SearchNewsObjectModel) downloadedData.get(position);
-        holder.headline.setText(object.getHeadline());
-        holder.snippet.setText(object.getSnippet());
+        final SearchNewsObjectModel object = (SearchNewsObjectModel) downloadedData.get(position); //extract the relevant searchNewsObject
+        holder.headline.setText(object.getHeadline()); //set the views headline text to the objects headline text
+        holder.snippet.setText(object.getSnippet()); //sets the views snippet text to the objects snippet text
 
         DateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 
-        String rawDate = object.pubDate;
+        String rawDate = object.pubDate; //extract the objects raw published date , format this date and then set the views published date
 
         try {
             holder.pubDate.setText(mContext.getString(R.string.published_date, outputFormat.format(inputFormat.parse(rawDate))));
@@ -64,11 +76,13 @@ public class SearchAdaptor extends RecyclerView.Adapter<SearchAdaptor.MyViewHold
         }
 
         if (object.getImageUrl().equals("noImage")) {
-            holder.searchImage.setImageResource(R.drawable.noimage);
+            holder.searchImage.setImageResource(R.drawable.noimage); //if no image URL is in the downloaded data, set a placeholder image
         } else {
-            Picasso.with(mContext).load(object.getImageUrl()).into(holder.searchImage);
+            Picasso.with(mContext).load(object.getImageUrl()).into(holder.searchImage); //otherwise using Picasso, download the image and load it into the views
+                                                                                        // imageview
         }
 
+        //sets the views onclicklistener to displat the full article in a webview
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -80,10 +94,14 @@ public class SearchAdaptor extends RecyclerView.Adapter<SearchAdaptor.MyViewHold
             }
         });
 
+        //determines wether the article has previously been read. If it has notify the user that they have read this.
         for (String s : articlesReadArray) {
             if (s.equals(object.webLink)) {
                 holder.getRead().setVisibility(View.VISIBLE);
                 holder.getReadText().setVisibility(View.VISIBLE);
+            }else {
+                holder.getRead().setVisibility(View.GONE);
+                holder.getReadText().setVisibility(View.GONE);
             }
 
         }

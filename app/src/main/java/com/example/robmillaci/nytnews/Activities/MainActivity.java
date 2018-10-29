@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -13,7 +12,6 @@ import android.support.design.widget.TabLayout.Tab;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -26,23 +24,20 @@ import com.example.robmillaci.nytnews.Data.MostPopulareNewsAysnchTask;
 import com.example.robmillaci.nytnews.Data.NewsListAsynchTask;
 import com.example.robmillaci.nytnews.R;
 import com.example.robmillaci.nytnews.Utils.Constants;
-import com.example.robmillaci.nytnews.Utils.GsonHelper;
 import com.example.robmillaci.nytnews.Utils.SharedPreferencesHelper;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements NewsListAsynchTask.DownloadDataCallback, MostPopulareNewsAysnchTask.DownloadMostPopularDataCallback {
-    RecyclerView newsItemsRecyclerView;
-    ArrayList data;
-    TabLayout mTabLayout;
-    TabLayout popularTabs;
-    String category;
-    int selectedTab;
-    SharedPreferencesHelper prefsHelper;
-    ProgressBar loadProgressBar;
+    private RecyclerView newsItemsRecyclerView; //to display the downloaded news objects
+    private ArrayList data; //the data that is downloaded - this is passed into the recyclerview adapter
+    private TabLayout popularTabs; //the sub tabs of the 'popular' tab
+    private String category; //the download category used in switch statments to determine which data has been downloaded
+    private int selectedTab; //the current selected tab
+    private SharedPreferencesHelper prefsHelper; //shared preferences used in this activity to keep a record of the selected tab
+    private ProgressBar loadProgressBar; //progress bar that is displayed as data is downloaded and removed once the download is complete
 
-    private static final String CHANNEL_ID = "NYTNotification";
-    private final String API_KEY = Constants.API_KEY;
+    private static final String CHANNEL_ID = "NYTNotification"; //final static string used when creating the notifications
 
     @SuppressWarnings({"ConstantConditions", "unchecked"})
     @Override
@@ -51,7 +46,12 @@ public class MainActivity extends AppCompatActivity implements NewsListAsynchTas
         setContentView(R.layout.activity_main);
         //noinspection ConstantConditions
         getSupportActionBar().setElevation(0);
+
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
         createNotificationChannel();
+
+
         prefsHelper = new SharedPreferencesHelper(this, "myPrefs", MODE_PRIVATE);
 
         //restore settings and notification when app is reCreated
@@ -59,25 +59,15 @@ public class MainActivity extends AppCompatActivity implements NewsListAsynchTas
         i.putExtra("display", false);
         startActivity(i);
 
-        SharedPreferences prefs = getSharedPreferences("myPrefs", MODE_PRIVATE);
-        if (prefs != null) {
-            try {
-                RecyclerViewAdapter.articlesReadArray = GsonHelper.getMyArray(this, "RecyclerViewReadArray");
-                MostPopularAdapter.articlesReadArray = GsonHelper.getMyArray(this, "PopularRecycleViewReadArray");
-                selectedTab = prefsHelper.getInt("myPrefs", "selectedTab", 0);
-            } catch (Exception e) {
-                e.getMessage();
-                e.printStackTrace();
-            }
-        }
-
+        //define and create the news items recycler view
         newsItemsRecyclerView = findViewById(R.id.recyclerview);
         newsItemsRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 
-        mTabLayout = findViewById(R.id.tabLayout);
+        //assign the view references and add onTabSelectedListener for the tab layout
+        TabLayout tabLayout = findViewById(R.id.tabLayout);
         popularTabs = findViewById(R.id.popularTabs);
         loadProgressBar = findViewById(R.id.progressBar);
-        mTabLayout.addOnTabSelectedListener(new OnTabSelectedListener() {
+        tabLayout.addOnTabSelectedListener(new OnTabSelectedListener() {
             @Override
             public void onTabSelected(Tab tab) {
                 selectedTab = tab.getPosition();
@@ -85,19 +75,19 @@ public class MainActivity extends AppCompatActivity implements NewsListAsynchTas
                     case 0:
                         //selected top stories
                         popularTabs.setVisibility(View.GONE);
-                        new NewsListAsynchTask(MainActivity.this).execute(Constants.POPULAR_NEWS_URL + API_KEY);
+                        new NewsListAsynchTask(MainActivity.this).execute(Constants.POPULAR_NEWS_URL);
                         break;
 
                     case 1:
                         //selected most popular
                         popularTabs.setVisibility(View.VISIBLE);
-                        getData(Constants.MOST_POPULAR_FOOD_URL + API_KEY);
+                        getData(Constants.MOST_POPULAR_FOOD_URL);
                         break;
 
                     case 2:
                         //selected business
                         popularTabs.setVisibility(View.GONE);
-                        getData(Constants.MOST_POPULAR_BUSINESS_URL + API_KEY);
+                        getData(Constants.MOST_POPULAR_BUSINESS_URL);
                         break;
                 }
             }
@@ -113,43 +103,28 @@ public class MainActivity extends AppCompatActivity implements NewsListAsynchTas
             }
         });
 
+        //initially select tab at index 0 (first tab) and download the data for that tab
+        tabLayout.getTabAt(0).select();
+        new NewsListAsynchTask(MainActivity.this).execute(Constants.POPULAR_NEWS_URL);
 
-        switch (selectedTab) {
-            case 0:
-                Log.d("downloadFinished", "onTabSelected: case 0 called");
-                mTabLayout.getTabAt(0).select();
-                new NewsListAsynchTask(MainActivity.this).execute("http://api.nytimes.com/svc/topstories/v2/home.json?api-key=166a1190cb80486a87ead710d48139ae");
-                break;
-
-            case 1:
-                mTabLayout.getTabAt(1).select();
-                //          getData("https://api.nytimes.com/svc/mostpopular/v2/mostviewed/Food/30.json?api-key=166a1190cb80486a87ead710d48139ae");
-                break;
-
-            case 2:
-                mTabLayout.getTabAt(2).select();
-//                getData("https://api.nytimes.com/svc/mostpopular/v2/mostviewed/Business%20Day/30.json?api-key=166a1190cb80486a87ead710d48139ae");
-                break;
-        }
-
-
+        //add on tab selected listener to the popular sub tabs
         popularTabs.addOnTabSelectedListener(new OnTabSelectedListener() {
             @Override
             public void onTabSelected(Tab tab) {
                 switch (tab.getPosition()) {
 
                     case 0:
-                        getData("https://api.nytimes.com/svc/mostpopular/v2/mostviewed/Food/30.json?api-key=166a1190cb80486a87ead710d48139ae");
+                        getData(Constants.MOST_POPULAR_FOOD_URL);
                         category = "food";
                         break;
 
                     case 1:
-                        getData("https://api.nytimes.com/svc/mostpopular/v2/mostviewed/Movies/30.json?api-key=166a1190cb80486a87ead710d48139ae");
+                        getData(Constants.MOST_POPULAR_MOVIES_URL);
                         category = "movies";
                         break;
 
                     case 2:
-                        getData("https://api.nytimes.com/svc/mostpopular/v2/mostviewed/Science/30.json?api-key=166a1190cb80486a87ead710d48139ae");
+                        getData(Constants.MOST_POPULAR_SCIENCE_URL);
                         category = "science";
                         break;
                 }
@@ -168,14 +143,15 @@ public class MainActivity extends AppCompatActivity implements NewsListAsynchTas
         });
     }
 
+    //callback from asynch data download which sets the downloaded data, sets the recyclerview adaptor and removes the progress bar
     @Override
     public void downloadFinished(ArrayList downloadData) {
-        Log.d("downloadFinished", "downloadFinished: reached here");
         data = downloadData;
         newsItemsRecyclerView.setAdapter(new RecyclerViewAdapter(data, getApplicationContext()));
         loadProgressBar.setVisibility(View.GONE);
     }
 
+    //callback from asynch popular data download which sets the downloaded data, sets the recyclerview adaptor and removes the progress bar
     @Override
     public void popularDataDownloadFinished(ArrayList downloadData, String category) {
         data = downloadData;
@@ -184,6 +160,7 @@ public class MainActivity extends AppCompatActivity implements NewsListAsynchTas
 
     }
 
+    //callback for the progress bar, updating as the asynch task is running
     @Override
     public void progressUpdateCallback(Integer... values) {
         loadProgressBar.setVisibility(View.VISIBLE);
@@ -192,6 +169,7 @@ public class MainActivity extends AppCompatActivity implements NewsListAsynchTas
 
     }
 
+    //creates the options menu for the app
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
@@ -199,14 +177,17 @@ public class MainActivity extends AppCompatActivity implements NewsListAsynchTas
         return true;
     }
 
+    //defines what happens when an options menu item is selected
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.search:
+                //starts the Search activity
                 startActivity(new Intent(this, SearchActivity.class));
                 break;
 
             case R.id.settings:
+                //starts the settings activity
                 startActivity(new Intent(this, SettingsActivity.class));
                 break;
         }
@@ -214,6 +195,8 @@ public class MainActivity extends AppCompatActivity implements NewsListAsynchTas
         return true;
     }
 
+
+    //method called with a URL to download 'most popular data'
     public void getData(String url) {
         try {
             new MostPopulareNewsAysnchTask(this, category).execute(url);
@@ -222,27 +205,22 @@ public class MainActivity extends AppCompatActivity implements NewsListAsynchTas
         }
     }
 
+
+    //save the state when the onPause lifecycle event is called
     @Override
     protected void onPause() {
         super.onPause();
         saveState();
     }
 
+    //stores the selected tab into shared preferences. This method is called from onPause
     @SuppressLint("ApplySharedPref")
     public void saveState() {
-        GsonHelper.storeMyArray(this, "RecyclerViewReadArray", RecyclerViewAdapter.articlesReadArray);
-        GsonHelper.storeMyArray(this, "PopularRecycleViewReadArray", MostPopularAdapter.articlesReadArray);
         prefsHelper.intToSharedPreferences("selectedTab", selectedTab);
     }
 
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        //check the settings and ensure alarms are set
-
-    }
-
+    //Method to create the notification channel. This is only used on API 26 +
     public void createNotificationChannel() {
         // Create the NotificationChannel, but only on API 26+ because
         // the NotificationChannel class is new and not in the support library
@@ -258,8 +236,6 @@ public class MainActivity extends AppCompatActivity implements NewsListAsynchTas
             if (notificationManager != null) notificationManager.createNotificationChannel(channel);
         }
     }
-
-
 
 
 }

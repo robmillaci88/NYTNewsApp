@@ -1,5 +1,10 @@
 package com.example.robmillaci.nytnews.Models;
 
+/*
+this class is used for constructing news objects from the downloaded JSON data
+ */
+
+
 public class NewsObjectModel {
     private String section;
     private String subsection;

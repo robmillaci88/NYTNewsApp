@@ -12,6 +12,8 @@ import com.example.robmillaci.nytnews.Activities.SettingsActivity;
 import com.example.robmillaci.nytnews.Data.MostPopulareNewsAysnchTask;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 
 public class ScheduleBroadcastReciever extends BroadcastReceiver implements MostPopulareNewsAysnchTask.DownloadMostPopularDataCallback {
     ArrayList foodData;
@@ -21,26 +23,55 @@ public class ScheduleBroadcastReciever extends BroadcastReceiver implements Most
     ArrayList entrepreneursData;
     ArrayList travelData;
     ArrayList<CheckBox> settingsCheckBoxes;
-    static boolean notifcationHasBeenSent;
+    private boolean notifcationHasBeenSent;
     Context mContext;
     SharedPreferencesHelper mSharedPreferencesHelper;
-    final String BASE_URL = Constants.ARTICLE_SEARCH_URL + Constants.API_KEY + Constants.ARTICLE_SEARCH_PARAMS;
+    final String BASE_URL = Constants.ARTICLE_SEARCH_URL + Constants.ARTICLE_SEARCH_PARAMS;
 
 
     @Override
     public void onReceive(Context context, Intent intent) {
         notifcationHasBeenSent = false;
         mContext = context;
-        mSharedPreferencesHelper = new SharedPreferencesHelper(mContext,"myPrefs",0);
+        mSharedPreferencesHelper = new SharedPreferencesHelper(mContext, "myPrefs", 0);
         Bundle intentExtras = intent.getExtras();
 
         try {
             foodData = GsonHelper.getMyArray(mContext, "foodData");
+            Log.d("restoredata", "onReceive: got food data");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        try {
+            Log.d("restoredata", "onReceive: got scienceData");
             moviesData = GsonHelper.getMyArray(mContext, "scienceData");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        try {
             scienceData = GsonHelper.getMyArray(mContext, "sportsData");
-            sportsData = GsonHelper.getMyArray(mContext, "entrepreneursData");
-            entrepreneursData = GsonHelper.getMyArray(mContext, "travelData");
-            travelData = GsonHelper.getMyArray(mContext, "moviesData");
+            Log.d("restoredata", "onReceive: got sportsData");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        try {
+        sportsData = GsonHelper.getMyArray(mContext, "entrepreneursData");
+            Log.d("restoredata", "onReceive: got entrepreneursData");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        try {
+        entrepreneursData = GsonHelper.getMyArray(mContext, "travelData");
+            Log.d("restoredata", "onReceive: got travelData");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        try {
+        travelData = GsonHelper.getMyArray(mContext, "moviesData");
+            Log.d("restoredata", "onReceive: got moviesData");
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -98,52 +129,57 @@ public class ScheduleBroadcastReciever extends BroadcastReceiver implements Most
         if (!notifcationHasBeenSent) {
             switch (category) {
                 case "food":
-                    Log.d("alarm", "popularDataDownloadFinished: reached food switch");
-                    if (data != foodData) {
+                    if (!listEqualsIgnoreOrder(data,foodData)) {
                         //fire notification - data has changed
                         tryToFireNotification();
                         foodData = data;
-                        Log.d("data", "popularDataDownloadFinished: data " + foodData);
                         dataDownloaded = true;
                     }
-
+                    break;
                 case "movies":
-                    if (data != moviesData) {
+                    if (!listEqualsIgnoreOrder(data,moviesData)) {
                         //fire notification - data has changed
                         tryToFireNotification();
                         moviesData = data;
                         dataDownloaded = true;
                     }
+                    break;
 
                 case "science":
-                    if (data != scienceData) {
+                    if (!listEqualsIgnoreOrder(data,scienceData)) {
                         //fire notification - data has changed
                         tryToFireNotification();
                         scienceData = data;
                         dataDownloaded = true;
                     }
+                    break;
 
                 case "entrepreneur":
-                    if (data != entrepreneursData) {
+                    if (!listEqualsIgnoreOrder(data,entrepreneursData)) {
                         //fire notification - data has changed
                         tryToFireNotification();
                         entrepreneursData = data;
                         dataDownloaded = true;
                     }
+                    break;
+
                 case "sport":
-                    if (data != sportsData) {
+                    if (!listEqualsIgnoreOrder(data,sportsData)) {
                         //fire notification - data has changed
                         tryToFireNotification();
                         sportsData = data;
                         dataDownloaded = true;
                     }
+                    break;
+
                 case "travel":
-                    if (data != travelData) {
+                    if (!listEqualsIgnoreOrder(data,travelData)) {
                         //fire notification - data has changed
                         tryToFireNotification();
                         travelData = data;
                         dataDownloaded = true;
                     }
+                    break;
             }
             saveDataToPreferences(category, dataDownloaded);
         }
@@ -197,7 +233,16 @@ public class ScheduleBroadcastReciever extends BroadcastReceiver implements Most
         }
     }
 
-    public static void setNotifcationHasBeenSent(boolean hasnotificationBeenSent) {
-        notifcationHasBeenSent = hasnotificationBeenSent;
+    public static <T> boolean listEqualsIgnoreOrder(List<T> list1, List<T> list2) {
+        if (list1 == null && list2 != null) {
+            return false;
+        } else if (list2 == null && list1 != null) {
+            return false;
+        } else if (list1 != null & list2 != null) {
+            return new HashSet<>(list1).equals(new HashSet<>(list2));
+        } else {
+            return false;
+        }
     }
+
 }

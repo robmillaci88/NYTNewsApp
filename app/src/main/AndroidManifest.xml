@@ -30,9 +30,6 @@
         <receiver
             android:name="com.example.robmillaci.nytnews.Utils.ScheduleBroadcastReciever"
             android:enabled="true" />
-        <receiver
-            android:name="com.example.robmillaci.nytnews.Utils.NotificationsReciever"
-            android:enabled="true" />
     </application>
 
 </manifest>

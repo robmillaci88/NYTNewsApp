@@ -7,20 +7,24 @@ import android.support.test.espresso.intent.Intents;
 import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
+
 import com.example.robmillaci.nytnews.Activities.MainActivity;
 import com.example.robmillaci.nytnews.Activities.SearchActivity;
+import com.example.robmillaci.nytnews.Activities.SearchResultsActivity;
 import com.example.robmillaci.nytnews.Activities.SettingsActivity;
 import com.example.robmillaci.nytnews.Activities.WebActivity;
+
 import junit.framework.AssertionFailedError;
-import org.junit.FixMethodOrder;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.runners.MethodSorters;
+
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.intent.Intents.intended;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
@@ -89,6 +93,7 @@ public class UITests {
 
     @Test
     public void CheckSearchActivity() throws InterruptedException {
+        //click on the search activity and check that the search activity class is launched
         Intents.init();
         onView(withId(R.id.search)).perform(click());
         Thread.sleep(1000);
@@ -97,9 +102,9 @@ public class UITests {
         Intents.release();
     }
 
-
     @Test
     public void CheckSettingsActivity() throws InterruptedException {
+        //click on the settings menu option and check that the settingsactivity is launched
         Intents.init();
         openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
         Thread.sleep(1000);
@@ -109,8 +114,10 @@ public class UITests {
         Intents.release();
     }
 
+
     @Test
     public void CheckNotificationsSet() throws InterruptedException {
+        //check that the notifications are set when the notification switch is turned on
         Intents.init();
         openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
         Thread.sleep(1000);
@@ -125,7 +132,7 @@ public class UITests {
             onView(withId(R.id.notificationSwitch)).perform(click());
             assertTrue(SettingsActivity.mBuilder != null);
             assertTrue(SettingsActivity.alarmManager != null);
-        }finally {
+        } finally {
             Intents.release();
         }
 
@@ -133,6 +140,7 @@ public class UITests {
 
     @Test
     public void CheckTurnOffNotification() throws InterruptedException {
+        //check notification alarm is removed when the notification switch is turned off
         Intents.init();
         openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
         Thread.sleep(1000);
@@ -146,7 +154,7 @@ public class UITests {
         } catch (AssertionFailedError e) {
             assertTrue(SettingsActivity.mBuilder == null);
             assertTrue(SettingsActivity.alarmManager == null);
-        }finally {
+        } finally {
             Intents.release();
         }
 
@@ -154,6 +162,7 @@ public class UITests {
 
     @Test
     public void CheckWebView() {
+        //check that clicking on a recycler view item launches the web activity (webview)
         Intents.init();
         onView(withId(R.id.recyclerview)).perform(click());
         intended(hasComponent(WebActivity.class.getName()));

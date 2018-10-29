@@ -1,5 +1,9 @@
 package com.example.robmillaci.nytnews.Models;
 
+/*
+this class is used for constructing top news objects from the downloaded JSON data
+ */
+
 public class TopNewsObjectModel {
     private String section;
     private String title;

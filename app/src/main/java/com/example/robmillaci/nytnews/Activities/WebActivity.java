@@ -1,13 +1,15 @@
 package com.example.robmillaci.nytnews.Activities;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.webkit.WebView;
 
 import com.example.robmillaci.nytnews.R;
 
+/*
+This class simple loads the URL passed in the intent into a webview
+ */
 public class WebActivity extends AppCompatActivity {
 
     @Override

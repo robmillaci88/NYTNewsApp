@@ -1,6 +1,7 @@
 package com.example.robmillaci.nytnews.Data;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.example.robmillaci.nytnews.Models.SearchNewsObjectModel;
 
@@ -17,8 +18,8 @@ import java.net.URL;
 import java.util.ArrayList;
 
 public class SearchNewsItemsAsynchTask extends AsyncTask<String, Integer, ArrayList> {
-    private ArrayList<SearchNewsObjectModel> searchObjectsArray = new ArrayList<>();
-    private downloadcallback mDownloadcallback;
+    private ArrayList<SearchNewsObjectModel> searchObjectsArray = new ArrayList<>(); //Arraylist to hold the downloaded searched news objects
+    private downloadcallback mDownloadcallback; //the callback used by this class to callback progress and datadownloaded
 
     public SearchNewsItemsAsynchTask(downloadcallback downloadcallback) {
         mDownloadcallback = downloadcallback;
@@ -26,26 +27,32 @@ public class SearchNewsItemsAsynchTask extends AsyncTask<String, Integer, ArrayL
 
     @Override
     protected ArrayList doInBackground(String... strings) {
+        //Asynch task that uses and inputstream reader and a buffered reader to download the data from the supplied URL
+        //A JsonReader object is then used to extract the relevant JSON field. The extracted JSON fields are passed to the constructor of the
+        //Search news objects
         publishProgress(1);
+
+        //call downloadWebinfo passing the URL passed to this asynch task
         String data = downloadWebinfo(strings[0]);
         try {
-            JSONObject reader = new JSONObject(data);
 
-            JSONObject objects = reader.getJSONObject("response");
-            JSONArray objectsArray = objects.getJSONArray("docs");
+            JSONObject reader = new JSONObject(data);
+            JSONObject objects = reader.getJSONObject("response"); //get the Json objects returned from the download of the data
+            JSONArray objectsArray = objects.getJSONArray("docs"); //get the jason objects array
 
             for (int i = 0; i < objectsArray.length(); i++) {
+                JSONObject arrayObject = (JSONObject) objectsArray.get(i); //get a single object from the Json objects array
+                final String webLink = arrayObject.getString("web_url"); //get the web url from the Json object
 
-                JSONObject arrayObject = (JSONObject) objectsArray.get(i);
-                final String webLink = arrayObject.getString("web_url");
+                String imageUrl = downloadImage(downloadWebinfo(webLink)); //pass the web url to the downloadImage method which extracts the Image URL from the html
 
-                String imageUrl = downloadImage(downloadWebinfo(webLink));
+                String snippet = arrayObject.getString("snippet"); //get the snippet from the Json array
+                JSONObject objHeadLine = arrayObject.getJSONObject("headline"); //get the headline Json object
+                String headline = objHeadLine.getString("main");  //extract the headline text from the headline Json object
+                String pubdate = arrayObject.getString("pub_date"); //get the published data from the json object
 
-                String snippet = arrayObject.getString("snippet");
-                JSONObject objHeadLine = arrayObject.getJSONObject("headline");
-                String headline = objHeadLine.getString("main");
-
-                SearchNewsObjectModel searchNewsObject = new SearchNewsObjectModel(headline, snippet, webLink, imageUrl);
+                //construct a new searchnewsObject passing the data extracted from the JSON
+                SearchNewsObjectModel searchNewsObject = new SearchNewsObjectModel(headline, snippet, pubdate,webLink, imageUrl);
                 searchObjectsArray.add(searchNewsObject);
 
             }
@@ -56,6 +63,7 @@ public class SearchNewsItemsAsynchTask extends AsyncTask<String, Integer, ArrayL
         return searchObjectsArray;
     }
 
+    //method that downloaded the data related to the passed URI and returns the data as a string
     private String downloadWebinfo(String uri) {
         StringBuilder sb = new StringBuilder();
         try {
@@ -75,6 +83,7 @@ public class SearchNewsItemsAsynchTask extends AsyncTask<String, Integer, ArrayL
         return sb.toString();
     }
 
+    //this method parses the passed html and gets the elements with the tag 'img'. It then extracts the images URL from the parsed HTML and returns it
     private String downloadImage(String html) {
         Document doc = Jsoup.parse(html);
         Element element = doc.getElementsByTag("img").first();
@@ -90,21 +99,23 @@ public class SearchNewsItemsAsynchTask extends AsyncTask<String, Integer, ArrayL
         }
     }
 
+    //progress update callback for displaying the progress bar as the data is downloaded Asynchronously
     @Override
     protected void onProgressUpdate(Integer... values) {
         mDownloadcallback.mcallback(values[0]);
 
     }
 
+    //post execution callback to set the recyclerview adaptor with the newly downloaded data
     @Override
     protected void onPostExecute(ArrayList arrayList) {
         super.onPostExecute(arrayList);
         mDownloadcallback.downloadFinished(arrayList);
     }
 
+    //interface for the callbacks. Any class using this Asynch class must implement its callbacks
     public interface downloadcallback {
         void mcallback(int progress);
-
         void downloadFinished(ArrayList resultData);
     }
 }

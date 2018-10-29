@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.example.robmillaci.nytnews.Activities.WebActivity;
 import com.example.robmillaci.nytnews.Models.TopNewsObjectModel;
 import com.example.robmillaci.nytnews.R;
+import com.example.robmillaci.nytnews.Utils.GsonHelper;
 import com.squareup.picasso.Picasso;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -23,14 +24,22 @@ import java.util.Locale;
 
 
 public class MostPopularAdapter extends RecyclerView.Adapter<MostPopularAdapter.MyViewHolder> {
-    private ArrayList downloadedData;
-    private Context mContext;
-    public static ArrayList<String> articlesReadArray;
+    private ArrayList downloadedData; //an arraylist that holds the downloaded data
+    private Context mContext; //the context of the calling activity
+    private ArrayList<String> articlesReadArray; //an arraylist that holds all read articles
 
 
     public MostPopularAdapter(ArrayList downloadedData, Context context) {
         this.downloadedData = downloadedData;
         this.mContext = context;
+
+        try {
+            //restore previously read articles
+            //noinspection unchecked
+            articlesReadArray = GsonHelper.getMyArray(mContext, "PopularRecycleViewReadArray");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         if (articlesReadArray == null) {
             articlesReadArray = new ArrayList<>();
         }
@@ -46,13 +55,13 @@ public class MostPopularAdapter extends RecyclerView.Adapter<MostPopularAdapter.
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull final MyViewHolder holder, int position) {
-        final TopNewsObjectModel object = (TopNewsObjectModel) downloadedData.get(position);
-        holder.title.setText(object.getTitle());
-        holder.abStract.setText(object.getAbStract());
-        holder.link.setText(object.getLink());
-        holder.byLine.setText(object.getByLine());
+        final TopNewsObjectModel object = (TopNewsObjectModel) downloadedData.get(position); //extract the topnewsobject held in the arraylist
+        holder.title.setText(object.getTitle()); //sets the views title to the objects title
+        holder.abStract.setText(object.getAbStract()); //sets the views abstract text field to the objects abstract
+        holder.link.setText(object.getLink()); //sets the views link text to the objects link
+        holder.byLine.setText(object.getByLine()); //sets the views byLine to the objects byline
         holder.section.setText("");
-        String rawDate = object.getPubDate();
+        String rawDate = object.getPubDate(); //extract the published date in its raw form and then format using DateFormat
         DateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 
@@ -64,11 +73,14 @@ public class MostPopularAdapter extends RecyclerView.Adapter<MostPopularAdapter.
         }
 
         if (object.getImgUrl().equals("noImage")) {
-            holder.newsImage.setImageResource(R.drawable.noimage);
+            holder.newsImage.setImageResource(R.drawable.noimage); //sets a placeholder image if no image is found in the downloaded data
         } else {
-            Picasso.with(mContext).load(object.getImgUrl()).into(holder.newsImage);
+            Picasso.with(mContext).load(object.getImgUrl()).into(holder.newsImage); //using Picasso, download the image from the objects image url and
+                                                                                    //load this into the views Imageview
         }
 
+        //sets the onclick listener of this view to display the article in a webview (to see the full article)
+        //Then addes this article to the articlesReadArray and saves this into shared preferences
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,15 +88,20 @@ public class MostPopularAdapter extends RecyclerView.Adapter<MostPopularAdapter.
                 intent.putExtra("url", object.getLink());
                 mContext.startActivity(intent);
                 articlesReadArray.add(holder.link.getText().toString());
+                GsonHelper.storeMyArray(mContext, "PopularRecycleViewReadArray", articlesReadArray);
                 notifyDataSetChanged();
 
             }
         });
 
+        //determines wether the article has previously been read. If it has notify the user that they have read this.
         for (Object s : articlesReadArray) {
             if (s.equals(holder.link.getText().toString())) {
                 holder.getRead().setVisibility(View.VISIBLE);
                 holder.getReadText().setVisibility(View.VISIBLE);
+            }else {
+                holder.getRead().setVisibility(View.GONE);
+                holder.getReadText().setVisibility(View.GONE);
             }
 
         }
