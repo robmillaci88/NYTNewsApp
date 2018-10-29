@@ -1,7 +1,6 @@
 package com.example.robmillaci.nytnews.Data;
 
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.example.robmillaci.nytnews.Models.SearchNewsObjectModel;
 
@@ -52,7 +51,7 @@ public class SearchNewsItemsAsynchTask extends AsyncTask<String, Integer, ArrayL
                 String pubdate = arrayObject.getString("pub_date"); //get the published data from the json object
 
                 //construct a new searchnewsObject passing the data extracted from the JSON
-                SearchNewsObjectModel searchNewsObject = new SearchNewsObjectModel(headline, snippet, pubdate,webLink, imageUrl);
+                SearchNewsObjectModel searchNewsObject = new SearchNewsObjectModel(headline, snippet, pubdate, webLink, imageUrl);
                 searchObjectsArray.add(searchNewsObject);
 
             }
@@ -116,6 +115,7 @@ public class SearchNewsItemsAsynchTask extends AsyncTask<String, Integer, ArrayL
     //interface for the callbacks. Any class using this Asynch class must implement its callbacks
     public interface downloadcallback {
         void mcallback(int progress);
+
         void downloadFinished(ArrayList resultData);
     }
 }

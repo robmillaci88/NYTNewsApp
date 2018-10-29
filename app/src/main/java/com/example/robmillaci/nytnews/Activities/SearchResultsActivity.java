@@ -8,15 +8,16 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+
 import com.example.robmillaci.nytnews.Adapters.SearchAdapter;
 import com.example.robmillaci.nytnews.Models.SearchNewsObjectModel;
 import com.example.robmillaci.nytnews.R;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -88,7 +89,7 @@ public class SearchResultsActivity extends AppCompatActivity {
         return false;
     }
 
-//when the onPause lifecycle event is called, the saveState method is called saving the read articles
+    //when the onPause lifecycle event is called, the saveState method is called saving the read articles
     @Override
     protected void onPause() {
         super.onPause();

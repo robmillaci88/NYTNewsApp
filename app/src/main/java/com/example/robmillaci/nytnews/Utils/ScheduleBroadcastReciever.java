@@ -55,21 +55,21 @@ public class ScheduleBroadcastReciever extends BroadcastReceiver implements Most
             e.printStackTrace();
         }
         try {
-        sportsData = GsonHelper.getMyArray(mContext, "entrepreneursData");
+            sportsData = GsonHelper.getMyArray(mContext, "entrepreneursData");
             Log.d("restoredata", "onReceive: got entrepreneursData");
 
         } catch (Exception e) {
             e.printStackTrace();
         }
         try {
-        entrepreneursData = GsonHelper.getMyArray(mContext, "travelData");
+            entrepreneursData = GsonHelper.getMyArray(mContext, "travelData");
             Log.d("restoredata", "onReceive: got travelData");
 
         } catch (Exception e) {
             e.printStackTrace();
         }
         try {
-        travelData = GsonHelper.getMyArray(mContext, "moviesData");
+            travelData = GsonHelper.getMyArray(mContext, "moviesData");
             Log.d("restoredata", "onReceive: got moviesData");
 
         } catch (Exception e) {
@@ -129,7 +129,7 @@ public class ScheduleBroadcastReciever extends BroadcastReceiver implements Most
         if (!notifcationHasBeenSent) {
             switch (category) {
                 case "food":
-                    if (!listEqualsIgnoreOrder(data,foodData)) {
+                    if (!listEqualsIgnoreOrder(data, foodData)) {
                         //fire notification - data has changed
                         tryToFireNotification();
                         foodData = data;
@@ -137,7 +137,7 @@ public class ScheduleBroadcastReciever extends BroadcastReceiver implements Most
                     }
                     break;
                 case "movies":
-                    if (!listEqualsIgnoreOrder(data,moviesData)) {
+                    if (!listEqualsIgnoreOrder(data, moviesData)) {
                         //fire notification - data has changed
                         tryToFireNotification();
                         moviesData = data;
@@ -146,7 +146,7 @@ public class ScheduleBroadcastReciever extends BroadcastReceiver implements Most
                     break;
 
                 case "science":
-                    if (!listEqualsIgnoreOrder(data,scienceData)) {
+                    if (!listEqualsIgnoreOrder(data, scienceData)) {
                         //fire notification - data has changed
                         tryToFireNotification();
                         scienceData = data;
@@ -155,7 +155,7 @@ public class ScheduleBroadcastReciever extends BroadcastReceiver implements Most
                     break;
 
                 case "entrepreneur":
-                    if (!listEqualsIgnoreOrder(data,entrepreneursData)) {
+                    if (!listEqualsIgnoreOrder(data, entrepreneursData)) {
                         //fire notification - data has changed
                         tryToFireNotification();
                         entrepreneursData = data;
@@ -164,7 +164,7 @@ public class ScheduleBroadcastReciever extends BroadcastReceiver implements Most
                     break;
 
                 case "sport":
-                    if (!listEqualsIgnoreOrder(data,sportsData)) {
+                    if (!listEqualsIgnoreOrder(data, sportsData)) {
                         //fire notification - data has changed
                         tryToFireNotification();
                         sportsData = data;
@@ -173,7 +173,7 @@ public class ScheduleBroadcastReciever extends BroadcastReceiver implements Most
                     break;
 
                 case "travel":
-                    if (!listEqualsIgnoreOrder(data,travelData)) {
+                    if (!listEqualsIgnoreOrder(data, travelData)) {
                         //fire notification - data has changed
                         tryToFireNotification();
                         travelData = data;
@@ -233,16 +233,8 @@ public class ScheduleBroadcastReciever extends BroadcastReceiver implements Most
         }
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public static <T> boolean listEqualsIgnoreOrder(List<T> list1, List<T> list2) {
-        if (list1 == null && list2 != null) {
-            return false;
-        } else if (list2 == null && list1 != null) {
-            return false;
-        } else if (list1 != null & list2 != null) {
-            return new HashSet<>(list1).equals(new HashSet<>(list2));
-        } else {
-            return false;
-        }
+        return (list1 != null && list2 != null) && new HashSet<>(list1).equals(new HashSet<>(list2));
     }
-
 }
