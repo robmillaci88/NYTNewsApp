@@ -1,5 +1,6 @@
 package com.example.robmillaci.nytnews.Activities;
 
+import android.app.ActionBar;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -8,6 +9,8 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -15,6 +18,7 @@ import android.widget.ImageView;
 import com.example.robmillaci.nytnews.Adapters.SearchAdapter;
 import com.example.robmillaci.nytnews.Models.SearchNewsObjectModel;
 import com.example.robmillaci.nytnews.R;
+import com.example.robmillaci.nytnews.Utils.TypeFaceSpan;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -35,7 +39,13 @@ public class SearchResultsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_searchresults);
         //noinspection ConstantConditions
         getSupportActionBar().setDisplayHomeAsUpEnabled(true); //adds a home button to the support action bar
-        setTitle("SearchActivity Results");
+
+        SpannableString s = new SpannableString("Search Results");
+        s.setSpan(new TypeFaceSpan(this, "titlefont.ttf"), 0, s.length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle(s);
 
         //Restores any previously read articles into the articlesReadArray from shared preferences
         SharedPreferences prefs = getSharedPreferences("myPrefs", MODE_PRIVATE);

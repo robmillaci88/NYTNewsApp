@@ -3,6 +3,7 @@ package com.example.robmillaci.nytnews.Adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -62,7 +63,14 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MyViewHold
     public void onBindViewHolder(@NonNull final MyViewHolder holder, int position) {
         final SearchNewsObjectModel object = (SearchNewsObjectModel) downloadedData.get(position); //extract the relevant searchNewsObject
         holder.headline.setText(object.getHeadline()); //set the views headline text to the objects headline text
+
+        Typeface typeface = Typeface.createFromAsset(mContext.getAssets(),"fonts/OldNewspaperTypes.ttf");
+        holder.headline.setTypeface(typeface);
+
         holder.snippet.setText(object.getSnippet()); //sets the views snippet text to the objects snippet text
+
+        Typeface typefaceabstract = Typeface.createFromAsset(mContext.getAssets(),"fonts/Chenier_Regular.ttf");
+        holder.snippet.setTypeface(typefaceabstract);
 
         DateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());

@@ -3,6 +3,7 @@ package com.example.robmillaci.nytnews.Adapters;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -57,7 +58,16 @@ public class MostPopularAdapter extends RecyclerView.Adapter<MostPopularAdapter.
     public void onBindViewHolder(@NonNull final MyViewHolder holder, int position) {
         final TopNewsObjectModel object = (TopNewsObjectModel) downloadedData.get(position); //extract the topnewsobject held in the arraylist
         holder.title.setText(object.getTitle()); //sets the views title to the objects title
+
+        Typeface typeface = Typeface.createFromAsset(mContext.getAssets(),"fonts/OldNewspaperTypes.ttf");
+        holder.title.setTypeface(typeface);
+
         holder.abStract.setText(object.getAbStract()); //sets the views abstract text field to the objects abstract
+
+        Typeface typefaceabstract = Typeface.createFromAsset(mContext.getAssets(),"fonts/Chenier_Regular.ttf");
+        holder.abStract.setTypeface(typefaceabstract);
+
+
         holder.link.setText(object.getLink()); //sets the views link text to the objects link
         holder.byLine.setText(object.getByLine()); //sets the views byLine to the objects byline
         holder.section.setText("");

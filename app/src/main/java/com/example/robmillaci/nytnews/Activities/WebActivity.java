@@ -1,11 +1,16 @@
 package com.example.robmillaci.nytnews.Activities;
 
+import android.app.ActionBar;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.TypefaceSpan;
 import android.view.MenuItem;
 import android.webkit.WebView;
 
 import com.example.robmillaci.nytnews.R;
+import com.example.robmillaci.nytnews.Utils.TypeFaceSpan;
 
 /*
 This class simple loads the URL passed in the intent into a webview
@@ -16,6 +21,14 @@ public class WebActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web);
+
+        SpannableString s = new SpannableString("NYT News");
+        s.setSpan(new TypeFaceSpan(this, "titlefont.ttf"), 0, s.length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle(s);
+
         //noinspection ConstantConditions
         getSupportActionBar().setDisplayHomeAsUpEnabled(true); //adds a home button to the support action bar
 

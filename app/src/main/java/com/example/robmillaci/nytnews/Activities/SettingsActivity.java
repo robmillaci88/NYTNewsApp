@@ -1,5 +1,6 @@
 package com.example.robmillaci.nytnews.Activities;
 
+import android.app.ActionBar;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -7,6 +8,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.Switch;
@@ -17,6 +20,7 @@ import com.example.robmillaci.nytnews.R;
 import com.example.robmillaci.nytnews.Utils.GsonHelper;
 import com.example.robmillaci.nytnews.Utils.ScheduleBroadcastReciever;
 import com.example.robmillaci.nytnews.Utils.SharedPreferencesHelper;
+import com.example.robmillaci.nytnews.Utils.TypeFaceSpan;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -48,6 +52,13 @@ public class SettingsActivity extends AppCompatActivity {
         //determines whether we are restoring settings or we want to actually display this activity to the user
         boolean display = getIntent().getBooleanExtra("display", true);
         setContentView(R.layout.activity_settings);
+
+        SpannableString s = new SpannableString("Settings");
+        s.setSpan(new TypeFaceSpan(this, "titlefont.ttf"), 0, s.length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle(s);
 
         //noinspection ConstantConditions
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

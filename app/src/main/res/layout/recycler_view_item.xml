@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@drawable/newspaper_background">
 
     <TextView
         android:id="@+id/newsTitle"
@@ -14,6 +15,7 @@
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:fontFamily="sans-serif"
         android:text="TextView"
         android:textSize="24sp"
         android:textStyle="bold"
@@ -31,7 +33,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
         android:text="TextView"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@android:color/black"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -108,7 +110,7 @@
         android:layout_width="0dp"
         android:layout_height="6dp"
         android:layout_marginTop="8dp"
-        android:background="?android:attr/listDivider"
+        android:background="@android:color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"

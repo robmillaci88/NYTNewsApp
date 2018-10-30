@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -64,7 +65,15 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         final NewsObjectModel object = (NewsObjectModel) downloadedData.get(position); //extract the revelant News object from the arraylist
         holder.section.setText(object.getSection() + " > " + object.getSubsection()); //set the views section text with the objects section text
         holder.title.setText(object.getTitle()); //sets the views title to the objects title
+
+        Typeface typeface = Typeface.createFromAsset(mContext.getAssets(),"fonts/OldNewspaperTypes.ttf");
+        holder.title.setTypeface(typeface);
+
         holder.abStract.setText(object.getAbStract()); //sets the views abstract to the objects abstract
+
+        Typeface typefaceabstract = Typeface.createFromAsset(mContext.getAssets(),"fonts/Chenier_Regular.ttf");
+        holder.abStract.setTypeface(typefaceabstract);
+
         holder.link.setText(object.getLink()); //sets the views link to the objects link
         holder.byLine.setText(object.getByLine()); //sets the views byLine to the objects byLine
 

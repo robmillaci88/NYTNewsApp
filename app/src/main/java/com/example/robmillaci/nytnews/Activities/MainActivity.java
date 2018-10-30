@@ -1,6 +1,7 @@
 package com.example.robmillaci.nytnews.Activities;
 
 import android.annotation.SuppressLint;
+import android.app.ActionBar;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Intent;
@@ -12,6 +13,8 @@ import android.support.design.widget.TabLayout.Tab;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -25,6 +28,7 @@ import com.example.robmillaci.nytnews.Data.NewsListAsynchTask;
 import com.example.robmillaci.nytnews.R;
 import com.example.robmillaci.nytnews.Utils.Constants;
 import com.example.robmillaci.nytnews.Utils.SharedPreferencesHelper;
+import com.example.robmillaci.nytnews.Utils.TypeFaceSpan;
 
 import java.util.ArrayList;
 
@@ -46,6 +50,14 @@ public class MainActivity extends AppCompatActivity implements NewsListAsynchTas
         setContentView(R.layout.activity_main);
         //noinspection ConstantConditions
         getSupportActionBar().setElevation(0);
+
+        SpannableString s = new SpannableString("NYT News");
+        s.setSpan(new TypeFaceSpan(this, "titlefont.ttf"), 0, s.length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle(s);
+
 
         // Create the NotificationChannel, but only on API 26+ because
         // the NotificationChannel class is new and not in the support library
