@@ -184,11 +184,12 @@ public class SettingsActivity extends AppCompatActivity {
                     mBuilder = null;
 
                     //cancel the alarm
-                    if (alarmManager != null) {
+                    try {
                         Intent intentAlarm = new Intent(getApplicationContext(), ScheduleBroadcastReciever.class);
                         alarmManager.cancel(PendingIntent.getBroadcast(getApplicationContext(), 1, intentAlarm, PendingIntent.FLAG_CANCEL_CURRENT));
                         alarmManager = null;
-
+                    }catch (Exception e){
+                        e.printStackTrace();
                     }
 
                 }
@@ -220,7 +221,6 @@ public class SettingsActivity extends AppCompatActivity {
         long alarmRecurranceTime = 1000 * 60* 60 * 24;
 
         alarmManager.setRepeating(AlarmManager.RTC, scheduleTime, alarmRecurranceTime, PendingIntent.getBroadcast(getApplicationContext(), 1, intentAlarm, PendingIntent.FLAG_CANCEL_CURRENT));
-
     }
 
     public TextView getNotificationSearchTerm() {
