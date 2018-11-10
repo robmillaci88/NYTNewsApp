@@ -125,15 +125,14 @@ public class UITests {
         Thread.sleep(1000);
         try {
             onView(withId(R.id.notificationSwitch)).check(matches(isChecked()));
-            assertTrue(SettingsActivity.mBuilder != null);
-            assertTrue(SettingsActivity.alarmManager != null);
         } catch (AssertionFailedError e) {
             onView(withId(R.id.notificationSwitch)).perform(click());
-            assertTrue(SettingsActivity.mBuilder != null);
-        //    assertTrue(SettingsActivity.alarmManager != null);
         } finally {
             Intents.release();
         }
+
+        assertTrue(SettingsActivity.mBuilder != null);
+        assertTrue(SettingsActivity.alarmManager != null);
     }
 
     @Test
