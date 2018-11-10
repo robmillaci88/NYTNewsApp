@@ -138,8 +138,6 @@ public class UITests {
         } finally {
             Intents.release();
         }
-
-        Log.d("Testsshit", "CheckNotificationsSet: mBuilder is " + SettingsActivity.mBuilder + " alarm manager is " + SettingsActivity.alarmManager);
         assertTrue(SettingsActivity.mBuilder != null);
         assertTrue(SettingsActivity.alarmManager != null);
     }
