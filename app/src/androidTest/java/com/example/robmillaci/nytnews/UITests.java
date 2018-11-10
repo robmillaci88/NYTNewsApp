@@ -163,10 +163,13 @@ public class UITests {
     @Test
     public void CheckWebView() {
         //check that clicking on a recycler view item launches the web activity (webview)
-        Intents.init();
-        onView(withId(R.id.recyclerview)).perform(click());
-        intended(hasComponent(WebActivity.class.getName()));
-        Intents.release();
+        try {
+            Intents.init();
+            onView(withId(R.id.recyclerview)).perform(click());
+            intended(hasComponent(WebActivity.class.getName()));
+        } finally {
+            Intents.release();
+        }
     }
 
 

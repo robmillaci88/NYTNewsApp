@@ -9,13 +9,13 @@ import android.util.Log;
 import android.widget.CheckBox;
 
 import com.example.robmillaci.nytnews.Activities.SettingsActivity;
-import com.example.robmillaci.nytnews.Data.MostPopulareNewsAysnchTask;
+import com.example.robmillaci.nytnews.Data.MostPopularNewsAysnchTask;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-public class ScheduleBroadcastReciever extends BroadcastReceiver implements MostPopulareNewsAysnchTask.DownloadMostPopularDataCallback {
+public class ScheduleBroadcastReciever extends BroadcastReceiver implements MostPopularNewsAysnchTask.DownloadMostPopularDataCallback {
     ArrayList foodData;
     ArrayList moviesData;
     ArrayList scienceData;
@@ -82,38 +82,38 @@ public class ScheduleBroadcastReciever extends BroadcastReceiver implements Most
             if (c.isChecked() && !notifcationHasBeenSent) {
                 switch (c.getTag().toString()) {
                     case "food":
-                        MostPopulareNewsAysnchTask downloadMostPopularDataFood = new MostPopulareNewsAysnchTask(this, "food");
+                        MostPopularNewsAysnchTask downloadMostPopularDataFood = new MostPopularNewsAysnchTask(this, "food");
                         assert intentExtras != null;
                         downloadMostPopularDataFood.execute(BASE_URL + intentExtras.getString("searchTerm") + "fq=news_desk:(\"Food\")");
                         break;
 
                     case "science":
-                        MostPopulareNewsAysnchTask downloadMostPopularDataScience = new MostPopulareNewsAysnchTask(this, "science");
+                        MostPopularNewsAysnchTask downloadMostPopularDataScience = new MostPopularNewsAysnchTask(this, "science");
                         assert intentExtras != null;
                         downloadMostPopularDataScience.execute(BASE_URL + intentExtras.getString("searchTerm") + "fq=news_desk:(\"Science\")");
                         break;
 
                     case "entre":
-                        MostPopulareNewsAysnchTask downloadMostPopularDataEntre = new MostPopulareNewsAysnchTask(this, "entrepreneur");
+                        MostPopularNewsAysnchTask downloadMostPopularDataEntre = new MostPopularNewsAysnchTask(this, "entrepreneur");
                         assert intentExtras != null;
                         downloadMostPopularDataEntre.execute(BASE_URL + intentExtras.getString("searchTerm") + "fq=news_desk:(\"Entrepreneur\")");
                         break;
 
                     case "movies":
-                        MostPopulareNewsAysnchTask downloadMostPopularDataMovie = new MostPopulareNewsAysnchTask(this, "movies");
+                        MostPopularNewsAysnchTask downloadMostPopularDataMovie = new MostPopularNewsAysnchTask(this, "movies");
                         assert intentExtras != null;
                         downloadMostPopularDataMovie.execute(BASE_URL + intentExtras.getString("searchTerm") + "fq=news_desk:(\"Movies\")");
                         break;
 
                     case "sport":
-                        MostPopulareNewsAysnchTask downloadMostPopularDataSport = new MostPopulareNewsAysnchTask(this, "sport");
+                        MostPopularNewsAysnchTask downloadMostPopularDataSport = new MostPopularNewsAysnchTask(this, "sport");
                         assert intentExtras != null;
                         downloadMostPopularDataSport.execute(BASE_URL + intentExtras.getString("searchTerm") + "fq=news_desk:(\"Sport\")");
 
                         break;
 
                     case "travel":
-                        MostPopulareNewsAysnchTask downloadMostPopularDataTravel = new MostPopulareNewsAysnchTask(this, "travel");
+                        MostPopularNewsAysnchTask downloadMostPopularDataTravel = new MostPopularNewsAysnchTask(this, "travel");
                         assert intentExtras != null;
                         downloadMostPopularDataTravel.execute(BASE_URL + intentExtras.getString("searchTerm") + "fq=news_desk:(\"Travel\")");
                         break;

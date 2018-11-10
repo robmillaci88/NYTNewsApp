@@ -22,7 +22,7 @@ public class WebActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web);
 
-        SpannableString s = new SpannableString("NYT News");
+        SpannableString s = new SpannableString("My News");
         s.setSpan(new TypeFaceSpan(this, "titlefont.ttf"), 0, s.length(),
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 

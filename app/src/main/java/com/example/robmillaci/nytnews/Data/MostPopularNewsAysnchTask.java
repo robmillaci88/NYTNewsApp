@@ -13,12 +13,12 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class MostPopulareNewsAysnchTask extends AsyncTask<String, Integer, ArrayList> {
+public class MostPopularNewsAysnchTask extends AsyncTask<String, Integer, ArrayList> {
     private ArrayList<TopNewsObjectModel> objects = new ArrayList<>(); //arraylist to hold the downloaded data's TopNewsObjects
     private DownloadMostPopularDataCallback mDownloadMostPopularDataCallback; //the callback to be used from this class
     private String category; //the category of downloaded data
 
-    public MostPopulareNewsAysnchTask(DownloadMostPopularDataCallback downloadMostPopularDataCallback, String category) {
+    public MostPopularNewsAysnchTask(DownloadMostPopularDataCallback downloadMostPopularDataCallback, String category) {
         mDownloadMostPopularDataCallback = downloadMostPopularDataCallback;
         this.category = category;
     }

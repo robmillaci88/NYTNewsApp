@@ -1,7 +1,6 @@
 package com.example.robmillaci.nytnews.Activities;
 
 import android.annotation.SuppressLint;
-import android.app.ActionBar;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Intent;
@@ -23,7 +22,7 @@ import android.widget.ProgressBar;
 
 import com.example.robmillaci.nytnews.Adapters.MostPopularAdapter;
 import com.example.robmillaci.nytnews.Adapters.RecyclerViewAdapter;
-import com.example.robmillaci.nytnews.Data.MostPopulareNewsAysnchTask;
+import com.example.robmillaci.nytnews.Data.MostPopularNewsAysnchTask;
 import com.example.robmillaci.nytnews.Data.NewsListAsynchTask;
 import com.example.robmillaci.nytnews.R;
 import com.example.robmillaci.nytnews.Utils.Constants;
@@ -32,7 +31,7 @@ import com.example.robmillaci.nytnews.Utils.TypeFaceSpan;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements NewsListAsynchTask.DownloadDataCallback, MostPopulareNewsAysnchTask.DownloadMostPopularDataCallback {
+public class MainActivity extends AppCompatActivity implements NewsListAsynchTask.DownloadDataCallback, MostPopularNewsAysnchTask.DownloadMostPopularDataCallback {
     private RecyclerView newsItemsRecyclerView; //to display the downloaded news objects
     private ArrayList data; //the data that is downloaded - this is passed into the recyclerview adapter
     private TabLayout popularTabs; //the sub tabs of the 'popular' tab
@@ -51,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements NewsListAsynchTas
         //noinspection ConstantConditions
         getSupportActionBar().setElevation(0);
 
-        SpannableString s = new SpannableString("NYT News");
+        SpannableString s = new SpannableString("My News");
         s.setSpan(new TypeFaceSpan(this, "titlefont.ttf"), 0, s.length(),
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
@@ -211,7 +210,7 @@ public class MainActivity extends AppCompatActivity implements NewsListAsynchTas
     //method called with a URL to download 'most popular data'
     public void getData(String url) {
         try {
-            new MostPopulareNewsAysnchTask(this, category).execute(url);
+            new MostPopularNewsAysnchTask(this, category).execute(url);
         } catch (Exception e) {
             e.printStackTrace();
         }
