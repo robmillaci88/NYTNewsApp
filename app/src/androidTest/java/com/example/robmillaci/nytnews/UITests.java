@@ -7,6 +7,7 @@ import android.support.test.espresso.intent.Intents;
 import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
+import android.util.Log;
 
 import com.example.robmillaci.nytnews.Activities.MainActivity;
 import com.example.robmillaci.nytnews.Activities.SearchActivity;
@@ -123,6 +124,13 @@ public class UITests {
         Thread.sleep(1000);
         onView(withText("Settings")).perform(click());
         Thread.sleep(1000);
+        //ensure that at least one checkbox is selected
+        try {
+            onView(withId(R.id.foodSettingsCheckBox)).check(matches(isChecked()));
+        }catch (AssertionFailedError e) {
+            onView(withId(R.id.foodSettingsCheckBox)).perform(click());
+        }
+
         try {
             onView(withId(R.id.notificationSwitch)).check(matches(isChecked()));
         } catch (AssertionFailedError e) {
@@ -131,6 +139,7 @@ public class UITests {
             Intents.release();
         }
 
+        Log.d("Testsshit", "CheckNotificationsSet: mBuilder is " + SettingsActivity.mBuilder + " alarm manager is " + SettingsActivity.alarmManager);
         assertTrue(SettingsActivity.mBuilder != null);
         assertTrue(SettingsActivity.alarmManager != null);
     }
@@ -163,7 +172,7 @@ public class UITests {
             Intents.init();
             onView(withId(R.id.recyclerview)).perform(click());
             try {
-                Thread.sleep(1000);
+                Thread.sleep(3000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

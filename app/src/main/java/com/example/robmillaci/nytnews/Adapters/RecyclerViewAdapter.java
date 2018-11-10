@@ -97,6 +97,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, WebActivity.class);
                 intent.putExtra("url", object.getLink());
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 mContext.startActivity(intent);
                 articlesReadArray.add(holder.link.getText().toString());
                 GsonHelper.storeMyArray(mContext, "RecyclerViewReadArray", articlesReadArray);

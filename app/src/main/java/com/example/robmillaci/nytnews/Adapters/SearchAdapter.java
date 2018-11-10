@@ -96,6 +96,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MyViewHold
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, WebActivity.class);
                 intent.putExtra("url", object.webLink);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 mContext.startActivity(intent);
                 articlesReadArray.add(object.webLink);
                 notifyDataSetChanged();
