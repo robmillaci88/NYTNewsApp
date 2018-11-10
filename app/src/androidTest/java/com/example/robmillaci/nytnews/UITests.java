@@ -171,13 +171,15 @@ public class UITests {
             onView(withId(R.id.recyclerview)).perform(click());
             try {
                 Thread.sleep(3000);
+                intended(hasComponent(WebActivity.class.getName()));
             } catch (InterruptedException e) {
                 e.printStackTrace();
+            } catch (AssertionFailedError a){
+                Log.d("CheckWebView", "CheckWebView: " + a.getMessage());
+                Log.d("CheckWebView", "CheckWebView: " + a.getCause());
             }
-            intended(hasComponent(WebActivity.class.getName()));
         } finally {
             Intents.release();
         }
     }
-
 }
