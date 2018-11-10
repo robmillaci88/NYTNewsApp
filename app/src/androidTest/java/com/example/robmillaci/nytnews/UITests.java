@@ -118,12 +118,14 @@ public class UITests {
     @Test
     public void CheckNotificationsSet() throws InterruptedException {
         //check that the notifications are set when the notification switch is turned on
+        Intents.init();
+        openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
+        Thread.sleep(1000);
+        onView(withText("Settings")).perform(click());
+
         try {
-            Intents.init();
-            openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
-            Thread.sleep(1000);
-            onView(withText("Settings")).perform(click());
             onView(withId(R.id.notificationSwitch)).check(matches(isChecked()));
+            onView(withId(R.id.notificationSwitch)).perform(click());
             assertTrue(SettingsActivity.mBuilder != null);
             assertTrue(SettingsActivity.alarmManager != null);
         } catch (AssertionFailedError e) {
@@ -158,16 +160,16 @@ public class UITests {
 
     }
 
-//    @Test
-//    public void CheckWebView() {
-//        //check that clicking on a recycler view item launches the web activity (webview)
-//        try {
-//            Intents.init();
-//            onView(withId(R.id.recyclerview)).perform(click());
-//            intended(hasComponent(WebActivity.class.getName()));
-//        } finally {
-//            Intents.release();
-//        }
-//    }
+    @Test
+    public void CheckWebView() {
+        //check that clicking on a recycler view item launches the web activity (webview)
+        try {
+            Intents.init();
+            onView(withId(R.id.recyclerview)).perform(click());
+            intended(hasComponent(WebActivity.class.getName()));
+        } finally {
+            Intents.release();
+        }
+    }
 
 }
