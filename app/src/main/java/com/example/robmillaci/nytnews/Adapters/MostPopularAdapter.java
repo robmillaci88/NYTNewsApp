@@ -106,8 +106,8 @@ public class MostPopularAdapter extends RecyclerView.Adapter<MostPopularAdapter.
         });
 
         //determines wether the article has previously been read. If it has notify the user that they have read this.
-        for (Object s : articlesReadArray) {
-            if (s.equals(holder.link.getText().toString())) {
+        if (articlesReadArray != null) {
+            if (articlesReadArray.contains(holder.link.getText().toString())) {
                 holder.getRead().setVisibility(View.VISIBLE);
                 holder.getReadText().setVisibility(View.VISIBLE);
             }else {

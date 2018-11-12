@@ -104,8 +104,8 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MyViewHold
         });
 
         //determines wether the article has previously been read. If it has notify the user that they have read this.
-        for (String s : articlesReadArray) {
-            if (s.equals(object.webLink)) {
+        if (articlesReadArray != null) {
+            if (articlesReadArray.contains(object.webLink)) {
                 holder.getRead().setVisibility(View.VISIBLE);
                 holder.getReadText().setVisibility(View.VISIBLE);
             }else {

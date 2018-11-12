@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -100,6 +101,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 mContext.startActivity(intent);
                 articlesReadArray.add(holder.link.getText().toString());
+                Log.d("ARTICLEREAD", "added read articles " + holder.link.getText().toString());
                 GsonHelper.storeMyArray(mContext, "RecyclerViewReadArray", articlesReadArray);
                 notifyDataSetChanged();
             }
@@ -107,15 +109,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         //determines wether the article has previously been read. If it has notify the user that they have read this.
         if (articlesReadArray != null) {
-            for (Object s : articlesReadArray) {
-                if (s.equals(holder.link.getText().toString())) {
+                if (articlesReadArray.contains(holder.link.getText().toString())) {
                     holder.getRead().setVisibility(View.VISIBLE);
                     holder.getReadText().setVisibility(View.VISIBLE);
                 }else {
                     holder.getRead().setVisibility(View.GONE);
                     holder.getReadText().setVisibility(View.GONE);
                 }
-            }
+
         }
 
     }
