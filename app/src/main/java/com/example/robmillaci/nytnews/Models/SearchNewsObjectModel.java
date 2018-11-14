@@ -5,11 +5,11 @@ this class is used for constructing searched news objects from the downloaded JS
  */
 
 public class SearchNewsObjectModel {
-    private String headline;
-    private String snippet;
-    public String pubDate;
-    public String webLink;
-    private String imageUrl;
+    private final String headline;
+    private final String snippet;
+    public final String pubDate;
+    public final String webLink;
+    private final String imageUrl;
 
     public SearchNewsObjectModel(String headline, String snippet, String pubDate, String webLink, String imageUrl) {
         this.headline = headline;
@@ -17,10 +17,6 @@ public class SearchNewsObjectModel {
         this.pubDate = pubDate;
         this.webLink = webLink;
         this.imageUrl = imageUrl;
-    }
-
-    public String getWebLink() {
-        return webLink;
     }
 
     public String getHeadline() {

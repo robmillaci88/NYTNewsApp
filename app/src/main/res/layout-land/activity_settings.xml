@@ -16,7 +16,8 @@
         app:layout_constraintEnd_toEndOf="@+id/sportsCheckBox"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/sportsSettingCheckBox"
-        app:layout_constraintTop_toBottomOf="@+id/sportsSettingCheckBox" />
+        app:layout_constraintTop_toBottomOf="@+id/sportsSettingCheckBox"
+        tools:ignore="UnknownIdInLayout" />
 
     <CheckBox
         android:id="@+id/entrepreneursSettingCheck"
@@ -38,7 +39,8 @@
         app:layout_constraintEnd_toEndOf="@+id/moviesSettingsCheckBox"
         app:layout_constraintHorizontal_bias="0.11"
         app:layout_constraintStart_toStartOf="@+id/moviesSettingsCheckBox"
-        app:layout_constraintTop_toBottomOf="@+id/moviesSettingsCheckBox" />
+        app:layout_constraintTop_toBottomOf="@+id/moviesSettingsCheckBox"
+        tools:ignore="HardcodedText" />
 
     <CheckBox
         android:id="@+id/scienceSettingCheckBox"
@@ -107,7 +109,8 @@
         android:text="Categories"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/notificationSearchTerm" />
+        app:layout_constraintTop_toBottomOf="@+id/notificationSearchTerm"
+        tools:ignore="HardcodedText" />
 
     <View
         android:id="@+id/divider4"

@@ -5,16 +5,14 @@ this class is used for constructing top news objects from the downloaded JSON da
  */
 
 public class TopNewsObjectModel {
-    private String section;
-    private String title;
-    private String abStract;
-    private String link;
-    private String byLine;
-    private String pubDate;
-    private String imgUrl;
+    private final String title;
+    private final String abStract;
+    private final String link;
+    private final String byLine;
+    private final String pubDate;
+    private final String imgUrl;
 
-    public TopNewsObjectModel(String section, String title, String abStract, String url, String byLine, String pubDate, String imgUrl) {
-        this.section = section;
+    public TopNewsObjectModel(String title, String abStract, String url, String byLine, String pubDate, String imgUrl) {
         this.title = title;
         this.abStract = abStract;
         this.link = url;
@@ -25,10 +23,6 @@ public class TopNewsObjectModel {
 
     public String getImgUrl() {
         return imgUrl;
-    }
-
-    public String getSection() {
-        return section;
     }
 
 

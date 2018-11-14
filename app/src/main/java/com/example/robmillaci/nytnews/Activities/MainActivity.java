@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity implements NewsListAsynchTas
     private RecyclerView newsItemsRecyclerView; //to display the downloaded news objects
     private ArrayList data; //the data that is downloaded - this is passed into the recyclerview adapter
     private TabLayout popularTabs; //the sub tabs of the 'popular' tab
-    private String category; //the download category used in switch statments to determine which data has been downloaded
+    private String category; //the download category used in switch statements to determine which data has been downloaded
     private int selectedTab; //the current selected tab
     private SharedPreferencesHelper prefsHelper; //shared preferences used in this activity to keep a record of the selected tab
     private ProgressBar loadProgressBar; //progress bar that is displayed as data is downloaded and removed once the download is complete
@@ -208,7 +208,7 @@ public class MainActivity extends AppCompatActivity implements NewsListAsynchTas
 
 
     //method called with a URL to download 'most popular data'
-    public void getData(String url) {
+    private void getData(String url) {
         try {
             new MostPopularNewsAysnchTask(this, category).execute(url);
         } catch (Exception e) {
@@ -226,13 +226,13 @@ public class MainActivity extends AppCompatActivity implements NewsListAsynchTas
 
     //stores the selected tab into shared preferences. This method is called from onPause
     @SuppressLint("ApplySharedPref")
-    public void saveState() {
+    private void saveState() {
         prefsHelper.intToSharedPreferences("selectedTab", selectedTab);
     }
 
 
     //Method to create the notification channel. This is only used on API 26 +
-    public void createNotificationChannel() {
+    private void createNotificationChannel() {
         // Create the NotificationChannel, but only on API 26+ because
         // the NotificationChannel class is new and not in the support library
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

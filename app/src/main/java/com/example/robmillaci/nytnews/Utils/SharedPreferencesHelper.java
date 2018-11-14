@@ -6,9 +6,9 @@ import android.content.SharedPreferences;
 
 //Helper class to store and retrieve shared preference data.
 public class SharedPreferencesHelper {
-    private Context mContext;
-    private int mode;
-    private SharedPreferences.Editor sharedEditor;
+    private final Context mContext;
+    private final int mode;
+    private final SharedPreferences.Editor sharedEditor;
 
     @SuppressLint("CommitPrefEdits")
     public SharedPreferencesHelper(Context context, String prefsName, int mode) {

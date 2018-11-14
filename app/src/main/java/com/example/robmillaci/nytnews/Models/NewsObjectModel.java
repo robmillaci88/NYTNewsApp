@@ -6,14 +6,14 @@ this class is used for constructing news objects from the downloaded JSON data
 
 
 public class NewsObjectModel {
-    private String section;
-    private String subsection;
-    private String title;
-    private String abStract;
-    private String link;
-    private String byLine;
-    private String pubDate;
-    private String imgUrl;
+    private final String section;
+    private final String subsection;
+    private final String title;
+    private final String abStract;
+    private final String link;
+    private final String byLine;
+    private final String pubDate;
+    private final String imgUrl;
 
     public NewsObjectModel(String section, String subsection, String title, String abStract, String url, String byLine, String pubDate, String imgUrl) {
         this.section = section;

@@ -1,11 +1,9 @@
 package com.example.robmillaci.nytnews.Activities;
 
-import android.app.ActionBar;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Spannable;
 import android.text.SpannableString;
-import android.text.style.TypefaceSpan;
 import android.view.MenuItem;
 import android.webkit.WebView;
 
@@ -27,6 +25,7 @@ public class WebActivity extends AppCompatActivity {
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        assert actionBar != null;
         actionBar.setTitle(s);
 
         //noinspection ConstantConditions

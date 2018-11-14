@@ -30,8 +30,8 @@ import java.util.Locale;
 import static android.content.Context.MODE_PRIVATE;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder> {
-    private ArrayList downloadedData; //an arraylist that holds the downloaded data
-    private Context mContext; //the context of the calling activity
+    private final ArrayList downloadedData; //an arraylist that holds the downloaded data
+    private final Context mContext; //the context of the calling activity
     private ArrayList<String> articlesReadArray; //an arraylist that holds all read articles
 
     public RecyclerViewAdapter(ArrayList downloadedData, Context context) {
@@ -89,7 +89,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             e.printStackTrace();
         }
 
-        Picasso.with(mContext).load(object.getImgUrl()).into(holder.newsImage); //using picasso download the objects image and load this into the imageview
+        Picasso.get().load(object.getImgUrl()).into(holder.newsImage); //using picasso download the objects image and load this into the imageview
 
         //sets the views onclick listener to display the news article in a webview in order to see the full article
         //also then add this article to the articlesReadArray and store this in shared preferences
@@ -129,15 +129,15 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
 
     static class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView section;
-        TextView title;
-        TextView abStract;
-        TextView link;
-        TextView byLine;
-        TextView pubDate;
-        ImageView newsImage;
-        ImageView read;
-        TextView readText;
+        final TextView section;
+        final TextView title;
+        final TextView abStract;
+        final TextView link;
+        final TextView byLine;
+        final TextView pubDate;
+        final ImageView newsImage;
+        final ImageView read;
+        final TextView readText;
 
         private MyViewHolder(View itemView) {
 
@@ -154,11 +154,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         }
 
-        public ImageView getRead() {
+        ImageView getRead() {
             return read;
         }
 
-        public TextView getReadText() {
+        TextView getReadText() {
             return readText;
         }
     }

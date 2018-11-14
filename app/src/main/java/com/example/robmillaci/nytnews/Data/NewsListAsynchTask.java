@@ -14,8 +14,8 @@ import java.net.URL;
 import java.util.ArrayList;
 
 public class NewsListAsynchTask extends AsyncTask<String, Integer, ArrayList> {
-    private ArrayList<NewsObjectModel> objects = new ArrayList<>(); //Arraylist to hold the downloaded news objects
-    private DownloadDataCallback mDownloadDataCallback; //the callback used by this class to callback progress and datadownloaded
+    private final ArrayList<NewsObjectModel> objects = new ArrayList<>(); //Arraylist to hold the downloaded news objects
+    private final DownloadDataCallback mDownloadDataCallback; //the callback used by this class to callback progress and datadownloaded
 
     public NewsListAsynchTask(DownloadDataCallback downloadDataCallback) {
         mDownloadDataCallback = downloadDataCallback;

@@ -1,6 +1,5 @@
 package com.example.robmillaci.nytnews.Activities;
 
-import android.app.ActionBar;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -27,11 +26,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SearchResultsActivity extends AppCompatActivity {
-    RecyclerView searchResultsRecyclerView; //the recycler view used to display the search review results to the user
-    ArrayList<SearchNewsObjectModel> data; //ArrayList of SearchNewsObjects used to display the data in the searchResultsRecyclerView
-    ImageView noResultsImage; //Image that is displayed to the user if no search results are found
-    ConstraintLayout mLayout; //The constraint layout. This reference is used to change the color of the Constraint layout to white if not data is found
-    SearchAdapter mAdapter; //the adaptor used in the searchResultsRecyclerView set adapter method/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,12 +53,12 @@ public class SearchResultsActivity extends AppCompatActivity {
 
 
         //assigns the view references to their IDs
-        noResultsImage = findViewById(R.id.noResultsImage);
-        mLayout = findViewById(R.id.constraintLayout);
-        searchResultsRecyclerView = findViewById(R.id.searchResultsRecyclerView);
+        ImageView noResultsImage = findViewById(R.id.noResultsImage);
+        ConstraintLayout layout = findViewById(R.id.constraintLayout);
+        RecyclerView searchResultsRecyclerView = findViewById(R.id.searchResultsRecyclerView);
         searchResultsRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 
-        //retrieves the downloaded data that was passed in the intent to create this activitys (the downloaded search data)
+        //retrieves the downloaded data that was passed in the intent to create this activities (the downloaded search data)
         Intent searchIntent = getIntent();
         String dataString = searchIntent.getStringExtra("dataArray");
 
@@ -72,17 +66,17 @@ public class SearchResultsActivity extends AppCompatActivity {
         Type type = new TypeToken<ArrayList<SearchNewsObjectModel>>() {
         }.getType();
 
-        data = gson.fromJson(dataString, type);
+        ArrayList<SearchNewsObjectModel> data = gson.fromJson(dataString, type);
 
         //if not data is found, the background is set to white and the 'no results image' is displayed, else
         //the recyclerview adaptor is created passing the downloaded data
         if (data.size() == 0) {
             //no data found
-            mLayout.setBackgroundColor(Color.WHITE);
+            layout.setBackgroundColor(Color.WHITE);
             noResultsImage.setVisibility(View.VISIBLE);
         } else {
-            mAdapter = new SearchAdapter(data, SearchResultsActivity.this);
-            searchResultsRecyclerView.setAdapter(mAdapter);
+            SearchAdapter adapter = new SearchAdapter(data, SearchResultsActivity.this);
+            searchResultsRecyclerView.setAdapter(adapter);
         }
     }
 
@@ -106,7 +100,7 @@ public class SearchResultsActivity extends AppCompatActivity {
         saveState();
     }
 
-    public void saveState() {
+    private void saveState() {
         SharedPreferences.Editor sharedEditor = getSharedPreferences("myPrefs", MODE_PRIVATE).edit();
         Gson gson = new Gson();
         String searchReadArray = gson.toJson(SearchAdapter.articlesReadArray);

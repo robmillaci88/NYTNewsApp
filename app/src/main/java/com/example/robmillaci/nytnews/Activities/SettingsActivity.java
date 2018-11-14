@@ -1,6 +1,5 @@
 package com.example.robmillaci.nytnews.Activities;
 
-import android.app.ActionBar;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -28,21 +27,14 @@ import java.util.Calendar;
 public class SettingsActivity extends AppCompatActivity {
     public static NotificationCompat.Builder mBuilder; //the builder used to create the notification
     private static final String CHANNEL_ID = "NYTNotification"; //the channel ID users to create the notification
-    Switch notificationSwitch; //the switch used to turn then notifications on or off
+    private Switch notificationSwitch; //the switch used to turn then notifications on or off
     public static ArrayList<CheckBox> settingsCheckBoxes; //arraylist that holds all the settings check boxes
     public static AlarmManager alarmManager; //the alarm manager that is used to send a broadcast to the ScheduleBroadcastReciever class
-    ArrayList<String> checkedArrayList; //
+    private ArrayList<String> checkedArrayList; //
 
 
-    //refernce setup to the checkboxes, notification search term textview and shared preferences
-    CheckBox foodSettingsCheckBox;
-    CheckBox scienceSettingsCheckBox;
-    CheckBox entreSettingsCheckBox;
-    CheckBox moviesSettingsCheckBox;
-    CheckBox sportsSettingsCheckBox;
-    CheckBox travelSettingsCheckBox;
-    TextView notificationSearchTerm;
-    SharedPreferencesHelper sharedPreferencesHelper;
+    private TextView notificationSearchTerm;
+    private SharedPreferencesHelper sharedPreferencesHelper;
 
 
     @Override
@@ -58,6 +50,7 @@ public class SettingsActivity extends AppCompatActivity {
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        assert actionBar != null;
         actionBar.setTitle(s);
 
         //noinspection ConstantConditions
@@ -73,27 +66,27 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
 
-    void checkBoxSetUp() {
+    private void checkBoxSetUp() {
         sharedPreferencesHelper = new SharedPreferencesHelper(this, "myPrefs", 0);
 
         notificationSearchTerm = findViewById(R.id.notificationSearchTerm);
 
-        foodSettingsCheckBox = findViewById(R.id.foodSettingsCheckBox);
+        CheckBox foodSettingsCheckBox = findViewById(R.id.foodSettingsCheckBox);
         foodSettingsCheckBox.setTag("food");
 
-        scienceSettingsCheckBox = findViewById(R.id.scienceSettingCheckBox);
+        CheckBox scienceSettingsCheckBox = findViewById(R.id.scienceSettingCheckBox);
         scienceSettingsCheckBox.setTag("science");
 
-        entreSettingsCheckBox = findViewById(R.id.entrepreneursSettingCheck);
+        CheckBox entreSettingsCheckBox = findViewById(R.id.entrepreneursSettingCheck);
         entreSettingsCheckBox.setTag("entre");
 
-        moviesSettingsCheckBox = findViewById(R.id.moviesSettingsCheckBox);
+        CheckBox moviesSettingsCheckBox = findViewById(R.id.moviesSettingsCheckBox);
         moviesSettingsCheckBox.setTag("movies");
 
-        sportsSettingsCheckBox = findViewById(R.id.sportsSettingCheckBox);
+        CheckBox sportsSettingsCheckBox = findViewById(R.id.sportsSettingCheckBox);
         sportsSettingsCheckBox.setTag("sport");
 
-        travelSettingsCheckBox = findViewById(R.id.travelSettingCheck);
+        CheckBox travelSettingsCheckBox = findViewById(R.id.travelSettingCheck);
         travelSettingsCheckBox.setTag("travel");
 
         //add all the checkboxes defined above into an arraylist that is used by this class and the broadcast reciever class
@@ -145,7 +138,7 @@ public class SettingsActivity extends AppCompatActivity {
         //restores any previously set search term text
         notificationSearchTerm.setText(sharedPreferencesHelper.getString("myPrefs", "searchTerm", ""));
 
-        //on change listener that determines if notifications can be sent. If at least one checkbo is selected, readyToGo is set to true and the notification
+        //on change listener that determines if notifications can be sent. If at least one checkbox is selected, readyToGo is set to true and the notification
         //intent can be created.
         notificationSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -217,14 +210,10 @@ public class SettingsActivity extends AppCompatActivity {
         // Get the Alarm Service.
         alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
 
-        // Set the reocurance of the alarm to be 24 hours 1000*60*60*24
+        // Set the reccurance of the alarm to be 24 hours 1000*60*60*24
         long alarmRecurranceTime = 1000 * 60* 60 * 24;
 
         alarmManager.setRepeating(AlarmManager.RTC, scheduleTime, alarmRecurranceTime, PendingIntent.getBroadcast(getApplicationContext(), 1, intentAlarm, PendingIntent.FLAG_CANCEL_CURRENT));
-    }
-
-    public TextView getNotificationSearchTerm() {
-        return notificationSearchTerm;
     }
 
     @Override

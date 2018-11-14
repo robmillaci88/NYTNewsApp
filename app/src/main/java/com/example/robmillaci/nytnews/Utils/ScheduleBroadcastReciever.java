@@ -5,28 +5,23 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NotificationManagerCompat;
-import android.util.Log;
 import android.widget.CheckBox;
-
 import com.example.robmillaci.nytnews.Activities.SettingsActivity;
 import com.example.robmillaci.nytnews.Data.MostPopularNewsAysnchTask;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
 public class ScheduleBroadcastReciever extends BroadcastReceiver implements MostPopularNewsAysnchTask.DownloadMostPopularDataCallback {
-    ArrayList foodData;
-    ArrayList moviesData;
-    ArrayList scienceData;
-    ArrayList sportsData;
-    ArrayList entrepreneursData;
-    ArrayList travelData;
-    ArrayList<CheckBox> settingsCheckBoxes;
+    private ArrayList foodData;
+    private ArrayList moviesData;
+    private ArrayList scienceData;
+    private ArrayList sportsData;
+    private ArrayList entrepreneursData;
+    private ArrayList travelData;
     private boolean notifcationHasBeenSent;
-    Context mContext;
-    SharedPreferencesHelper mSharedPreferencesHelper;
-    final String BASE_URL = Constants.ARTICLE_SEARCH_URL + Constants.ARTICLE_SEARCH_PARAMS;
+    private Context mContext;
+    private SharedPreferencesHelper mSharedPreferencesHelper;
 
 
     @Override
@@ -38,47 +33,39 @@ public class ScheduleBroadcastReciever extends BroadcastReceiver implements Most
 
         try {
             foodData = GsonHelper.getMyArray(mContext, "foodData");
-            Log.d("restoredata", "onReceive: got food data");
         } catch (Exception e) {
             e.printStackTrace();
         }
         try {
-            Log.d("restoredata", "onReceive: got scienceData");
             moviesData = GsonHelper.getMyArray(mContext, "scienceData");
         } catch (Exception e) {
             e.printStackTrace();
         }
         try {
             scienceData = GsonHelper.getMyArray(mContext, "sportsData");
-            Log.d("restoredata", "onReceive: got sportsData");
         } catch (Exception e) {
             e.printStackTrace();
         }
         try {
             sportsData = GsonHelper.getMyArray(mContext, "entrepreneursData");
-            Log.d("restoredata", "onReceive: got entrepreneursData");
-
         } catch (Exception e) {
             e.printStackTrace();
         }
         try {
             entrepreneursData = GsonHelper.getMyArray(mContext, "travelData");
-            Log.d("restoredata", "onReceive: got travelData");
-
         } catch (Exception e) {
             e.printStackTrace();
         }
         try {
             travelData = GsonHelper.getMyArray(mContext, "moviesData");
-            Log.d("restoredata", "onReceive: got moviesData");
-
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        settingsCheckBoxes = SettingsActivity.settingsCheckBoxes;
+        ArrayList<CheckBox> settingsCheckBoxes = SettingsActivity.settingsCheckBoxes;
 
         for (CheckBox c : settingsCheckBoxes) {
+            String BASE_URL = Constants.ARTICLE_SEARCH_URL + Constants.ARTICLE_SEARCH_PARAMS;
             if (c.isChecked() && !notifcationHasBeenSent) {
                 switch (c.getTag().toString()) {
                     case "food":
@@ -223,7 +210,7 @@ public class ScheduleBroadcastReciever extends BroadcastReceiver implements Most
 
     }
 
-    public void tryToFireNotification() {
+    private void tryToFireNotification() {
         if (SettingsActivity.mBuilder != null) {
             NotificationManagerCompat notificationManager = NotificationManagerCompat.from(mContext);
 
@@ -234,7 +221,7 @@ public class ScheduleBroadcastReciever extends BroadcastReceiver implements Most
     }
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
-    public static <T> boolean listEqualsIgnoreOrder(List<T> list1, List<T> list2) {
+    private static <T> boolean listEqualsIgnoreOrder(List<T> list1, List<T> list2) {
         return (list1 != null && list2 != null) && new HashSet<>(list1).equals(new HashSet<>(list2));
     }
 }

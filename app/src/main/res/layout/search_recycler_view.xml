@@ -15,7 +15,9 @@
         android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/archive" />
+        app:srcCompat="@drawable/archive"
+        android:contentDescription="TODO"
+        tools:ignore="ContentDescription,HardcodedText" />
 
     <TextView
         android:id="@+id/headline"
@@ -32,7 +34,8 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/read"
         app:layout_constraintStart_toEndOf="@+id/searchImage"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="HardcodedText" />
 
     <TextView
         android:id="@+id/snippet"
@@ -48,7 +51,8 @@
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchImage" />
+        app:layout_constraintTop_toBottomOf="@+id/searchImage"
+        tools:ignore="HardcodedText" />
 
     <TextView
         android:id="@+id/pubdate"
@@ -59,10 +63,10 @@
         android:layout_marginTop="8dp"
         android:text="TextView"
         app:layout_constraintStart_toEndOf="@+id/searchImage"
-        app:layout_constraintTop_toBottomOf="@+id/snippet" />
+        app:layout_constraintTop_toBottomOf="@+id/snippet"
+        tools:ignore="HardcodedText" />
 
     <View
-        android:id="@+id/divider2"
         android:layout_width="0dp"
         android:layout_height="7dp"
         android:layout_marginTop="8dp"
@@ -81,7 +85,9 @@
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/read" />
+        app:srcCompat="@drawable/read"
+        android:contentDescription="TODO"
+        tools:ignore="ContentDescription,HardcodedText" />
 
     <TextView
         android:id="@+id/readText"
@@ -94,5 +100,6 @@
         android:textSize="12sp"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/read" />
+        app:layout_constraintTop_toBottomOf="@+id/read"
+        tools:ignore="HardcodedText" />
 </android.support.constraint.ConstraintLayout>

@@ -11,7 +11,6 @@ import android.util.Log;
 
 import com.example.robmillaci.nytnews.Activities.MainActivity;
 import com.example.robmillaci.nytnews.Activities.SearchActivity;
-import com.example.robmillaci.nytnews.Activities.SearchResultsActivity;
 import com.example.robmillaci.nytnews.Activities.SettingsActivity;
 import com.example.robmillaci.nytnews.Activities.WebActivity;
 
@@ -25,7 +24,6 @@ import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
 import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.intent.Intents.intended;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
@@ -44,7 +42,7 @@ import static org.junit.Assert.assertTrue;
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
 @RunWith(AndroidJUnit4.class)
-public class UITests {
+class UITests {
 
     @Rule
     public ActivityTestRule<MainActivity> mActivityRule =

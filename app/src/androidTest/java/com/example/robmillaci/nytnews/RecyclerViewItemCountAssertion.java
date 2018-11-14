@@ -6,14 +6,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import static junit.framework.Assert.assertTrue;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * This class checks that the expected items in the recycler view adaptor matches
- * the acount item count in the adaptor
+ * the actual item count in the adaptor
  */
-public class RecyclerViewItemCountAssertion implements ViewAssertion {
+class RecyclerViewItemCountAssertion implements ViewAssertion {
 
     private final int expectedCount;
 

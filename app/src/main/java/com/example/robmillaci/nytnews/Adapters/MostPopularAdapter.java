@@ -25,8 +25,8 @@ import java.util.Locale;
 
 
 public class MostPopularAdapter extends RecyclerView.Adapter<MostPopularAdapter.MyViewHolder> {
-    private ArrayList downloadedData; //an arraylist that holds the downloaded data
-    private Context mContext; //the context of the calling activity
+    private final ArrayList downloadedData; //an arraylist that holds the downloaded data
+    private final Context mContext; //the context of the calling activity
     private ArrayList<String> articlesReadArray; //an arraylist that holds all read articles
 
 
@@ -85,7 +85,7 @@ public class MostPopularAdapter extends RecyclerView.Adapter<MostPopularAdapter.
         if (object.getImgUrl().equals("noImage")) {
             holder.newsImage.setImageResource(R.drawable.noimage); //sets a placeholder image if no image is found in the downloaded data
         } else {
-            Picasso.with(mContext).load(object.getImgUrl()).into(holder.newsImage); //using Picasso, download the image from the objects image url and
+            Picasso.get().load(object.getImgUrl()).into(holder.newsImage); //using Picasso, download the image from the objects image url and
                                                                                     //load this into the views Imageview
         }
 
@@ -124,15 +124,15 @@ public class MostPopularAdapter extends RecyclerView.Adapter<MostPopularAdapter.
     }
 
     static class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView section;
-        TextView title;
-        TextView abStract;
-        TextView link;
-        TextView byLine;
-        TextView pubDate;
-        ImageView newsImage;
-        ImageView read;
-        TextView readText;
+        final TextView section;
+        final TextView title;
+        final TextView abStract;
+        final TextView link;
+        final TextView byLine;
+        final TextView pubDate;
+        final ImageView newsImage;
+        final ImageView read;
+        final TextView readText;
 
         private MyViewHolder(View itemView) {
 
@@ -148,11 +148,11 @@ public class MostPopularAdapter extends RecyclerView.Adapter<MostPopularAdapter.
             this.readText = itemView.findViewById(R.id.readText);
         }
 
-        public ImageView getRead() {
+        ImageView getRead() {
             return read;
         }
 
-        public TextView getReadText() {
+        TextView getReadText() {
             return readText;
         }
     }

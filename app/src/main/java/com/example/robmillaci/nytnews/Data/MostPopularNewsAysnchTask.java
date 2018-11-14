@@ -14,9 +14,9 @@ import java.net.URL;
 import java.util.ArrayList;
 
 public class MostPopularNewsAysnchTask extends AsyncTask<String, Integer, ArrayList> {
-    private ArrayList<TopNewsObjectModel> objects = new ArrayList<>(); //arraylist to hold the downloaded data's TopNewsObjects
-    private DownloadMostPopularDataCallback mDownloadMostPopularDataCallback; //the callback to be used from this class
-    private String category; //the category of downloaded data
+    private final ArrayList<TopNewsObjectModel> objects = new ArrayList<>(); //arraylist to hold the downloaded data's TopNewsObjects
+    private final DownloadMostPopularDataCallback mDownloadMostPopularDataCallback; //the callback to be used from this class
+    private final String category; //the category of downloaded data
 
     public MostPopularNewsAysnchTask(DownloadMostPopularDataCallback downloadMostPopularDataCallback, String category) {
         mDownloadMostPopularDataCallback = downloadMostPopularDataCallback;
@@ -60,7 +60,7 @@ public class MostPopularNewsAysnchTask extends AsyncTask<String, Integer, ArrayL
                 JSONObject imgArray = metaArray.getJSONObject(1); //get the image information from the metaArray
                 String imgUrl = imgArray.getString("url"); //get the URL of the image from the imgArray object
 
-                TopNewsObjectModel newsObject = new TopNewsObjectModel(section, title,
+                TopNewsObjectModel newsObject = new TopNewsObjectModel(title,
                         abStract, link, byLine, pubdate, imgUrl);
                 objects.add(newsObject);
             }

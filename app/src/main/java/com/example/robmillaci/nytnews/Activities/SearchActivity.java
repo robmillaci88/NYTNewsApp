@@ -1,6 +1,5 @@
 package com.example.robmillaci.nytnews.Activities;
 
-import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -30,22 +29,16 @@ import java.util.Date;
 import java.util.Locale;
 
 public class SearchActivity extends AppCompatActivity implements SearchNewsItemsAsynchTask.downloadcallback {
-    TextView fromDate; //the from date text view of the search activity
-    TextView toDate; //the to date text view of the search activity
-    Button searchButton; //the search button of the search activity
-    CheckBox artsCheckBox; //the arts checkbox of the search activity
-    CheckBox businessCheckBox; //the business check box of the search activity
-    CheckBox entrepreneursCheckBox; //the entrepreneurs check box of the search activity
-    CheckBox politicsCheckBox; //the politics check box of the search activity
-    CheckBox sportsCheckBox; //the sports check box of the search activity
-    CheckBox travelCheckBox; //the travel check box of the search activity
-    EditText searchTermText; //the search term text view of the search activity
-    Switch sortSwitch; //the switch to determine sorting order
-    ProgressBar mProgressBar; //the progress bar to be displayed as data is being asynchronously downloaded
-    ArrayList data; //array list to hold the downloaded data
-    ArrayList<CheckBox> searchSubjectCheckBoxes; //an arraylist to hold all the search activities check boxes
+    private TextView fromDate; //the from date text view of the search activity
+    private TextView toDate; //the to date text view of the search activity
+    private Button searchButton; //the search button of the search activity
+    private EditText searchTermText; //the search term text view of the search activity
+    private Switch sortSwitch; //the switch to determine sorting order
+    private ProgressBar mProgressBar; //the progress bar to be displayed as data is being asynchronously downloaded
+    private ArrayList data; //array list to hold the downloaded data
+    private ArrayList<CheckBox> searchSubjectCheckBoxes; //an arraylist to hold all the search activities check boxes
 
-    com.takisoft.datetimepicker.DatePickerDialog mDatePickerDialog; //custom date time picker API used for selecting to and from date.
+    private com.takisoft.datetimepicker.DatePickerDialog mDatePickerDialog; //custom date time picker API used for selecting to and from date.
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,12 +62,12 @@ public class SearchActivity extends AppCompatActivity implements SearchNewsItems
         searchButton = findViewById(R.id.searchButton);
         fromDate = findViewById(R.id.fromDate);
         toDate = findViewById(R.id.toDate);
-        artsCheckBox = findViewById(R.id.artsCheckBox);
-        businessCheckBox = findViewById(R.id.businessCheckBox);
-        entrepreneursCheckBox = findViewById(R.id.entrepreneursCheckBox);
-        politicsCheckBox = findViewById(R.id.politicsCheckBox);
-        sportsCheckBox = findViewById(R.id.sportsCheckBox);
-        travelCheckBox = findViewById(R.id.travelCheckBox);
+        CheckBox artsCheckBox = findViewById(R.id.artsCheckBox);
+        CheckBox businessCheckBox = findViewById(R.id.businessCheckBox);
+        CheckBox entrepreneursCheckBox = findViewById(R.id.entrepreneursCheckBox);
+        CheckBox politicsCheckBox = findViewById(R.id.politicsCheckBox);
+        CheckBox sportsCheckBox = findViewById(R.id.sportsCheckBox);
+        CheckBox travelCheckBox = findViewById(R.id.travelCheckBox);
         searchTermText = findViewById(R.id.notificationSearchTerm);
         sortSwitch = findViewById(R.id.sortSwitch);
         mProgressBar = findViewById(R.id.progressBar);
@@ -190,9 +183,9 @@ public class SearchActivity extends AppCompatActivity implements SearchNewsItems
     }
 
     //method that returns whether the application is ready to search or not.
-    //if the user doesnt provide a search term and at least one checkbox is ticked, then ready to search is false and a toast message
+    //if the user doesn't provide a search term and at least one checkbox is ticked, then ready to search is false and a toast message
     //is displayed. Otherwise readyToSearch = true;
-    public boolean isReadyTosearch() {
+    private boolean isReadyTosearch() {
         boolean readyToSearch = false;
 
         String searchText = searchTermText.getText().toString();
@@ -244,7 +237,4 @@ public class SearchActivity extends AppCompatActivity implements SearchNewsItems
     }
 
 
-    public ProgressBar getProgressBar() {
-        return mProgressBar;
-    }
 }

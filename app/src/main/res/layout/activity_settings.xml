@@ -16,7 +16,8 @@
         app:layout_constraintEnd_toEndOf="@+id/sportsCheckBox"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/sportsSettingCheckBox"
-        app:layout_constraintTop_toBottomOf="@+id/sportsSettingCheckBox" />
+        app:layout_constraintTop_toBottomOf="@+id/sportsSettingCheckBox"
+        tools:ignore="HardcodedText,UnknownIdInLayout" />
 
     <CheckBox
         android:id="@+id/entrepreneursSettingCheck"
@@ -26,7 +27,8 @@
         android:tag="entre"
         android:text="Entrepreneurs"
         app:layout_constraintStart_toStartOf="@+id/scienceSettingCheckBox"
-        app:layout_constraintTop_toBottomOf="@+id/scienceSettingCheckBox" />
+        app:layout_constraintTop_toBottomOf="@+id/scienceSettingCheckBox"
+        tools:ignore="HardcodedText" />
 
     <CheckBox
         android:id="@+id/sportsSettingCheckBox"
@@ -38,7 +40,8 @@
         app:layout_constraintEnd_toEndOf="@+id/moviesSettingsCheckBox"
         app:layout_constraintHorizontal_bias="0.11"
         app:layout_constraintStart_toStartOf="@+id/moviesSettingsCheckBox"
-        app:layout_constraintTop_toBottomOf="@+id/moviesSettingsCheckBox" />
+        app:layout_constraintTop_toBottomOf="@+id/moviesSettingsCheckBox"
+        tools:ignore="HardcodedText" />
 
     <CheckBox
         android:id="@+id/scienceSettingCheckBox"
@@ -48,7 +51,8 @@
         android:tag="science"
         android:text="Science"
         app:layout_constraintStart_toStartOf="@+id/foodSettingsCheckBox"
-        app:layout_constraintTop_toBottomOf="@+id/foodSettingsCheckBox" />
+        app:layout_constraintTop_toBottomOf="@+id/foodSettingsCheckBox"
+        tools:ignore="HardcodedText" />
 
     <CheckBox
         android:id="@+id/foodSettingsCheckBox"
@@ -62,7 +66,8 @@
         android:text="Food"
         app:layout_constraintEnd_toStartOf="@+id/textView6"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView6" />
+        app:layout_constraintTop_toBottomOf="@+id/textView6"
+        tools:ignore="HardcodedText" />
 
     <EditText
         android:id="@+id/notificationSearchTerm"
@@ -78,7 +83,8 @@
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="HardcodedText" />
 
     <CheckBox
         android:id="@+id/moviesSettingsCheckBox"
@@ -93,7 +99,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.35"
         app:layout_constraintStart_toEndOf="@+id/textView6"
-        app:layout_constraintTop_toBottomOf="@+id/textView6" />
+        app:layout_constraintTop_toBottomOf="@+id/textView6"
+        tools:ignore="HardcodedText" />
 
     <TextView
         android:id="@+id/textView6"
@@ -107,7 +114,8 @@
         android:text="Categories"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/notificationSearchTerm" />
+        app:layout_constraintTop_toBottomOf="@+id/notificationSearchTerm"
+        tools:ignore="HardcodedText" />
 
     <View
         android:id="@+id/divider4"
@@ -147,6 +155,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/notificationSwitch"
         app:layout_constraintEnd_toStartOf="@+id/notificationSwitch"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/notificationSwitch" />
+        app:layout_constraintTop_toTopOf="@+id/notificationSwitch"
+        tools:ignore="HardcodedText" />
 
 </android.support.constraint.ConstraintLayout>

@@ -24,7 +24,8 @@
         android:layout_marginTop="8dp"
         android:text="Entrepreneurs"
         app:layout_constraintStart_toStartOf="@+id/businessCheckBox"
-        app:layout_constraintTop_toBottomOf="@+id/businessCheckBox" />
+        app:layout_constraintTop_toBottomOf="@+id/businessCheckBox"
+        tools:ignore="HardcodedText" />
 
     <CheckBox
         android:id="@+id/sportsCheckBox"
@@ -177,7 +178,6 @@
         app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
     <TextView
-        android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="15dp"
         android:layout_marginLeft="8dp"
@@ -189,7 +189,6 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"

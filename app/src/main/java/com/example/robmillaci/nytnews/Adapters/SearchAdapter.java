@@ -28,8 +28,8 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MyViewHolder> {
 
-    private ArrayList downloadedData; //arraylist to hold the downloaded data
-    private Context mContext; //the calling activities context
+    private final ArrayList downloadedData; //arraylist to hold the downloaded data
+    private final Context mContext; //the calling activities context
     public static ArrayList<String> articlesReadArray; //arraylist holding the read articles
 
 
@@ -86,11 +86,11 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MyViewHold
         if (object.getImageUrl().equals("noImage")) {
             holder.searchImage.setImageResource(R.drawable.noimage); //if no image URL is in the downloaded data, set a placeholder image
         } else {
-            Picasso.with(mContext).load(object.getImageUrl()).into(holder.searchImage); //otherwise using Picasso, download the image and load it into the views
+            Picasso.get().load(object.getImageUrl()).into(holder.searchImage); //otherwise using Picasso, download the image and load it into the views
                                                                                         // imageview
         }
 
-        //sets the views onclicklistener to displat the full article in a webview
+        //sets the views onclicklistener to display the full article in a webview
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -124,12 +124,12 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MyViewHold
 
 
     static class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView headline;
-        TextView snippet;
-        TextView pubDate;
-        ImageView read;
-        ImageView searchImage;
-        TextView readText;
+        final TextView headline;
+        final TextView snippet;
+        final TextView pubDate;
+        final ImageView read;
+        final ImageView searchImage;
+        final TextView readText;
 
         MyViewHolder(View itemView) {
             super(itemView);
@@ -141,11 +141,11 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MyViewHold
             this.searchImage = itemView.findViewById(R.id.searchImage);
         }
 
-        public ImageView getRead() {
+        ImageView getRead() {
             return read;
         }
 
-        public TextView getReadText() {
+        TextView getReadText() {
             return readText;
         }
 
