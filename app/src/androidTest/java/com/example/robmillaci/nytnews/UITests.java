@@ -42,7 +42,7 @@ import static org.junit.Assert.assertTrue;
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
 @RunWith(AndroidJUnit4.class)
-class UITests {
+public class UITests {
 
     @Rule
     public ActivityTestRule<MainActivity> mActivityRule =
