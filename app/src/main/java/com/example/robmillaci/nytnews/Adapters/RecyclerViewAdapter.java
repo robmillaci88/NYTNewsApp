@@ -123,7 +123,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public int getItemCount() {
-        return downloadedData.size();
+        if (downloadedData!= null) {
+            return downloadedData.size();
+        }else {
+            return 0;
+        }
 
     }
 

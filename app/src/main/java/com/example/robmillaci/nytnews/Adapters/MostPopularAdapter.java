@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,9 +31,11 @@ public class MostPopularAdapter extends RecyclerView.Adapter<MostPopularAdapter.
     private ArrayList<String> articlesReadArray; //an arraylist that holds all read articles
 
 
+
     public MostPopularAdapter(ArrayList downloadedData, Context context) {
         this.downloadedData = downloadedData;
         this.mContext = context;
+
 
         try {
             //restore previously read articles

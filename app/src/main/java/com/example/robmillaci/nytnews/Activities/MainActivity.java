@@ -6,6 +6,7 @@ import android.app.NotificationManager;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.TabLayout.OnTabSelectedListener;
 import android.support.design.widget.TabLayout.Tab;
@@ -158,6 +159,9 @@ public class MainActivity extends AppCompatActivity implements NewsListAsynchTas
     @Override
     public void downloadFinished(ArrayList downloadData) {
         data = downloadData;
+        if (data == null){
+            newsItemsRecyclerView.setBackgroundResource(R.drawable.no_internet);
+        }
         newsItemsRecyclerView.setAdapter(new RecyclerViewAdapter(data, getApplicationContext()));
         loadProgressBar.setVisibility(View.GONE);
     }
@@ -166,6 +170,9 @@ public class MainActivity extends AppCompatActivity implements NewsListAsynchTas
     @Override
     public void popularDataDownloadFinished(ArrayList downloadData, String category) {
         data = downloadData;
+        if (data == null){
+            newsItemsRecyclerView.setBackgroundResource(R.drawable.no_internet);
+        }
         newsItemsRecyclerView.setAdapter(new MostPopularAdapter(data, getApplicationContext()));
         loadProgressBar.setVisibility(View.GONE);
 

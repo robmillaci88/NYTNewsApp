@@ -69,6 +69,7 @@ public class NewsListAsynchTask extends AsyncTask<String, Integer, ArrayList> {
 
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
         return objects;
     }
