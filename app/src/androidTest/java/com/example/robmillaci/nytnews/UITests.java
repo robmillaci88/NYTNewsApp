@@ -41,6 +41,7 @@ import static org.junit.Assert.assertTrue;
  *
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
+@SuppressWarnings("WeakerAccess")
 @RunWith(AndroidJUnit4.class)
 public class UITests {
 
